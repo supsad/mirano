@@ -535,7 +535,7 @@ export const App = () => {
               <div className="order__payment">
                 <label className="order__label-radio">
                   <input className="order__radio" type="radio" name="payment-online"
-                         value="true" defaultChecked={} />Оплата онлайн
+                         value="true" defaultChecked />Оплата онлайн
                 </label>
               </div>
               <div className="order__delivery">
