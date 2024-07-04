@@ -1,3 +1,4 @@
+import './card.scss';
 import classNames from 'classnames';
 
 export const Card = ({ className, img, title, dateDelivery, price}) => (

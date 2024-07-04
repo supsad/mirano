@@ -1,5 +1,6 @@
+import './goods.scss';
 import { Cart } from '../Cart/Cart';
-import { goodsArray } from '../../goodsArray.js';
+import { goodsArray } from './goodsArray.js';
 import { Card } from '../Card/Card.jsx';
 
 export const Goods = () => (

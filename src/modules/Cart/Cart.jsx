@@ -1,3 +1,5 @@
+import './cart.scss';
+
 export const Cart = () => (
   <section className="cart cart_open">
     <div className="cart__container">

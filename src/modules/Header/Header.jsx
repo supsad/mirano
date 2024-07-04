@@ -1,3 +1,5 @@
+import './header.scss';
+
 export const Header = () => (
   <header className="header">
     <div className="container header__container">
