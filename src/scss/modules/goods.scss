@@ -1,0 +1,58 @@
+@use "../varibles" as *;
+@use "../media" as *;
+
+.goods {
+  padding: 60px 0;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: 20px;
+  }
+
+  &__box {
+    flex-grow: 1;
+    max-width: 970px;
+    min-height: 310px;
+  }
+
+  @include tablet {
+    padding: 40px 0;
+  }
+
+  &__title {
+    font-family: $second-family;
+    font-weight: 400;
+    font-size: 50px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: center;
+    color: $green;
+    margin-bottom: 40px;
+
+    @include tablet {
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 310px);
+    margin: 0 auto;
+    justify-content: center;
+    gap: 24px 20px;
+
+    @include mobile {
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      column-gap: 12px;
+    }
+  }
+  &__no-product {
+    text-align: center;
+    font-size: 24px;
+    color: $green;
+    grid-column: 1 / -1;
+  }
+}
