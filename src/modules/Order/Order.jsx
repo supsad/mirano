@@ -1,4 +1,4 @@
-import './order.scss';
+import styles from './Order.module.scss';
 import { OrderForm } from '../OrderForm/OrderForm.jsx';
 
 const Titles = {
@@ -7,24 +7,22 @@ const Titles = {
 };
 
 export const Order = ({ type = '' }) => {
-  if (type === undefined || type === null || type === '') {
-    return;
-  }
+  if (type === undefined || type === null || type === '') return null;
 
   return (
-    <div className="order">
-      <div className="order__wrapper">
-        <h2 className="order__title">{ Titles[`${type?.toUpperCase()}`] }</h2>
+    <div className={ styles.order }>
+      <div className={ styles.wrapper }>
+        <h2 className={ styles.title }>{ Titles[`${type?.toUpperCase()}`] }</h2>
 
         {
           type?.toUpperCase() === Object.keys(Titles)[0] ? (
-            <OrderForm className="order__form" />
+            <OrderForm className={ styles.form } />
           ) : (
-            <p className="order__id">Ваш номер заказа: 971f365a-caa1-4cdb-9446-bad2eff047e1</p>
+            <p>Ваш номер заказа: 971f365a-caa1-4cdb-9446-bad2eff047e1</p>
           )
         }
 
-        <button className="order__close" type="button">×</button>
+        <button className={ styles.close } type="button">×</button>
       </div>
     </div>
   );
