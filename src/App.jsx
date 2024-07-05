@@ -12,16 +12,18 @@ export const App = () => {
       <Header />
 
       <main>
-        <Hero />
+        <Hero className="container" />
 
-        <Filter />
+        <Filter
+          titleClass="visually-hidden"
+          containerClass="container" />
 
-        <Goods />
+        <Goods className="container" />
 
-        <Subscribe />
+        <Subscribe className="container" />
       </main>
 
-      <Footer />
+      <Footer className="container" />
 
       <Order />
     </>
