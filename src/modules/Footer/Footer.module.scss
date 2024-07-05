@@ -1,0 +1,55 @@
+@use "/src/scss/varibles" as *;
+@use "/src/scss/media" as *;
+
+.footer {
+  padding: 80px 0;
+  background: $footer url("/img/figure.svg") no-repeat bottom;
+  background-size: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+
+  @include tablet {
+    gap: 40px;
+  }
+}
+
+.logo {
+  width: 200px;
+}
+
+.address {
+  font-style: normal;
+}
+
+.mail {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.social-list {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.developers-title {
+  margin-bottom: 3px;
+}
+
+.developers-item {
+  margin-bottom: 3px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.copyright {
+  text-transform: uppercase;
+}
