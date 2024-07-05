@@ -1,0 +1,72 @@
+@use "/src/scss/varibles" as *;
+@use "/src/scss/media" as *;
+
+.cart-item {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba($dark, 0.04);
+  display: grid;
+  grid-template-columns: 54px 1fr min-content;
+  gap: 8px 12px;
+  align-items: center;
+  grid-template-areas:
+      "image title title"
+      "image counter price";
+
+  &:last-child {
+    border-bottom-color: transparent;
+  }
+}
+
+.img {
+  align-self: start;
+  grid-area: image;
+  border-radius: 12px;
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+}
+
+.item-title {
+  grid-area: title;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.counter {
+  grid-area: counter;
+  display: flex;
+  gap: 4px;
+}
+
+.counter-btn {
+  border-radius: 6px;
+  width: 29px;
+  height: 29px;
+  background: $bg;
+  font-size: 14px;
+}
+
+.counter-input {
+  font-size: 14px;
+  width: 22px;
+  padding: 0;
+  border: 0;
+  text-align: center;
+  background-color: transparent;
+  outline: 1px solid transparent;
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+
+  &:focus-visible {
+    outline-color: $dark;
+  }
+}
+
+.price {
+  grid-area: price;
+}
+
