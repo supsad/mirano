@@ -1,0 +1,95 @@
+@use "/src/scss/varibles" as *;
+@use "/src/scss/media" as *;
+
+.form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  gap: 12px;
+
+  &_choices {
+    gap: 64px;
+
+    @include mobile {
+      gap: 40px;
+    }
+  }
+}
+
+.radio {
+  appearance: none;
+  position: absolute;
+}
+
+.label {
+  padding: 16px 16px 16px 60px;
+  cursor: pointer;
+  border-radius: 300px;
+  background-color: $white;
+  color: $dark;
+  background-position: center left 16px;
+  background-repeat: no-repeat;
+  background-size: 40px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+
+  @include mobile {
+    padding: 10px 12px 10px 40px;
+    background-position: center left 12px;
+    background-size: 24px;
+    min-height: 40px;
+  }
+
+  &_flower {
+    background-image: url("/img/flowers.png");
+  }
+
+  &_toys {
+    background-image: url("/img/bear-toy.png");
+  }
+
+  &_postcard {
+    background-image: url("/img/postcard.png");
+  }
+
+  &:hover {
+    background-color: $orange;
+  }
+}
+
+.radio:focus-visible + .label {
+  outline: 2px solid $orange;
+  outline-offset: 5px;
+}
+
+.radio:checked + .label {
+  background-color: $light-orange;
+}
+
+.choices {
+  position: relative;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: url("/img/arrow.svg") no-repeat center/contain;
+  }
+}

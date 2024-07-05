@@ -1,35 +1,61 @@
-import './filter.scss';
+import styles from './Filter.module.scss';
 import { Choices } from '../Choices/Choices.jsx';
+import classNames from 'classnames';
 
-export const Filter = () => (
-  <section className="filter">
-    <h2 className="visually-hidden"></h2>
-    <div className="container">
-      <form className="filter__form">
-        <fieldset className="filter__group">
-          <input className="filter__radio" type="radio" name="type" value="bouquets" id="flower" defaultChecked />
-          <label className="filter__label filter__label_flower" htmlFor="flower">Цветы</label>
+export const Filter = ({ titleClass, containerClass }) => (
+  <section>
+    <h2 className={ titleClass }></h2>
+    <div className={ containerClass }>
+      <form className={ styles.form }>
+        <fieldset className={ styles.group }>
+          <input
+            className={ styles.radio }
+            type="radio"
+            name="type"
+            value="bouquets"
+            id="flower"
+            defaultChecked />
+          <label
+            className={ classNames(styles.label, styles.label_flower) }
+            htmlFor="flower">
+            Цветы
+          </label>
 
-          <input className="filter__radio" type="radio" name="type" value="toys" id="toys" />
-          <label className="filter__label filter__label_toys" htmlFor="toys">Игрушки</label>
+          <input
+            className={ styles.radio }
+            type="radio"
+            name="type"
+            value="toys"
+            id="toys" />
+          <label
+            className={ classNames(styles.label, styles.label_toys) }
+            htmlFor="toys">
+            Игрушки
+          </label>
 
-          <input className="filter__radio" type="radio" name="type" value="postcards" id="postcard" />
-          <label className="filter__label filter__label_postcard" htmlFor="postcard">Открытки</label>
+          <input
+            className={ styles.radio }
+            type="radio"
+            name="type"
+            value="postcards"
+            id="postcard" />
+          <label
+            className={ classNames(styles.label, styles.label_postcard) }
+            htmlFor="postcard">
+            Открытки
+          </label>
         </fieldset>
 
-        <fieldset className="filter__group filter__group_choices">
-          <div className="filter__choices choices">
-            <button className="filter__select choices__btn" type="button">Цена</button>
-
-            <div className="choices__box filter__choices-box">
-              <fieldset className="filter__price">
-                <input className="filter__input-price" type="text" name="minPrice" placeholder="от" />
-                <input className="filter__input-price" type="text" name="maxPrice" placeholder="до" />
-              </fieldset>
-            </div>
+        <fieldset className={ classNames(styles.group, styles.group_choices) }>
+          <div className={ styles.choices }>
+            <button className={ styles.select } type="button">Цена</button>
+            <Choices type={ 'price' } />
           </div>
 
-          <Choices />
+          <div className={ styles.choices }>
+            <button className={ styles.select } type="button">Тип товара</button>
+            <Choices type={ 'type' } />
+          </div>
         </fieldset>
       </form>
     </div>
