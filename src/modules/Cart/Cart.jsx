@@ -5,7 +5,7 @@ import { CartItem } from '../CartItem/CartItem.jsx';
 export const Cart = () => {
   const tempArr = [{ id: 1 }, { id: 2 }, { id: 3 }];
 
-  const isOpen = false;
+  const isOpen = true;
 
   if (!isOpen) return null;
 
@@ -32,7 +32,7 @@ export const Cart = () => {
 
         <ul className={ styles.list }>
           {
-            // TODO Replace tempArr
+            // TODO: Replace tempArr
             tempArr.map(item => (
               <CartItem key={ item.id } />
             ))
@@ -41,7 +41,6 @@ export const Cart = () => {
 
         <div className={ styles.footer }>
           <button className={ styles['order-btn'] }>Оформить</button>
-          {/* FIXME: ? styles.priceTotal */ }
           <p className={ styles.price }>0&nbsp;₽</p>
         </div>
       </div>

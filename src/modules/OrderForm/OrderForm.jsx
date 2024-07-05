@@ -86,7 +86,6 @@ export const OrderForm = ({ className }) => (
       </fieldset>
     </form>
     <div className={ styles.footer }>
-      {/* FIXME: <p className="order-form__total" */ }
       <p>92100&nbsp;₽</p>
       <button
         className={ styles.button }
