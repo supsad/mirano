@@ -10,7 +10,7 @@ export const Card = ({ img, title, dateDelivery, price }) => (
     <div className={ styles.content }>
       <h3 className={ styles.title }>{ title }</h3>
       <div className={ styles.footer }>
-        <p className={ styles.dateDelivery }>{ dateDelivery }</p>
+        <p className={ styles['date-delivery'] }>{ dateDelivery }</p>
         <button className={ styles.button }>{ price }&nbsp;₽</button>
       </div>
     </div>

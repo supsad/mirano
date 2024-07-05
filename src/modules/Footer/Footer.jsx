@@ -66,11 +66,11 @@ export const Footer = ({ className }) => (
         <ul>
           <li className={ styles['developers-item'] }>
             Designer:&nbsp;
-            <a className="footer__link" href="#">Anastasia Ilina</a>
+            <a href="#">Anastasia Ilina</a>
           </li>
           <li className={ styles['developers-item'] }>
             Developer:&nbsp;
-            <a className="footer__link" href="https://github.com/supsad">Dmitry Void</a>
+            <a href="https://github.com/supsad">Dmitry Void</a>
           </li>
         </ul>
       </div>
