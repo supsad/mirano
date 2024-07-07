@@ -4,7 +4,7 @@ import classNames from 'classnames';
 export const Hero = ({ className }) => (
   <section className={ styles.hero }>
     <div className={ className }>
-      <div className={ styles.headGroup }>
+      <div className={ styles['head-group'] }>
         <h1 className={ styles.title }>Авторские букеты</h1>
         <p className={ styles.subtitle }>и подарки</p>
       </div>

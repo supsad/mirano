@@ -9,7 +9,7 @@ import { Order } from './modules/Order/Order.jsx';
 export const App = () => {
   return (
     <>
-      <Header />
+      <Header className="container" />
 
       <main>
         <Hero className="container" />
