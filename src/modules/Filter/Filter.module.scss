@@ -77,19 +77,43 @@
   background-color: $light-orange;
 }
 
-.choices {
-  position: relative;
+.price {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 8px;
 }
 
-.select {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.input-price {
+  border-radius: 32px;
+  padding: 8px 16px;
+  width: 110px;
+  height: 40px;
+  background-color: $bg;
+  border: none;
 
-  &:after {
-    content: "";
-    width: 8px;
-    height: 8px;
-    background: url("/img/arrow.svg") no-repeat center/contain;
+  @include mobile {
+    width: 80px;
+  }
+}
+
+.type-item {
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.type-button {
+  white-space: nowrap;
+
+  &:hover {
+    color: $light-orange;
+  }
+
+  &_active {
+    color: $orange;
   }
 }

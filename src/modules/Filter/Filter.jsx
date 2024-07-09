@@ -47,15 +47,41 @@ export const Filter = ({ titleClass, containerClass }) => (
         </fieldset>
 
         <fieldset className={ classNames(styles.group, styles.group_choices) }>
-          <div className={ styles.choices }>
-            <button className={ styles.select } type="button">Цена</button>
-            <Choices type={ 'price' } />
-          </div>
+          <Choices buttonLabel={ 'Цена' }>
+            <fieldset className={ styles.price }>
+              <input
+                className={ styles['input-price'] }
+                type="text"
+                name="minPrice"
+                placeholder="от" />
+              <input
+                className={ styles['input-price'] }
+                type="text"
+                name="maxPrice"
+                placeholder="до" />
+            </fieldset>
+          </Choices>
 
-          <div className={ styles.choices }>
-            <button className={ styles.select } type="button">Тип товара</button>
-            <Choices type={ 'type' } />
-          </div>
+
+          <Choices buttonLabel={ 'Тип товара' }>
+            <ul>
+              <li className={ styles['type-item'] }>
+                <button className={ styles['type-button'] } type="button">Монобукеты</button>
+              </li>
+              <li className={ styles['type-item'] }>
+                <button className={ styles['type-button'] } type="button">Авторские букеты</button>
+              </li>
+              <li className={ styles['type-item'] }>
+                <button className={ styles['type-button'] } type="button">Цветы в коробке</button>
+              </li>
+              <li className={ styles['type-item'] }>
+                <button className={ styles['type-button'] } type="button">Цветы в корзине</button>
+              </li>
+              <li className={ styles['type-item'] }>
+                <button className={ styles['type-button'] } type="button">Букеты из сухоцветов</button>
+              </li>
+            </ul>
+          </Choices>
         </fieldset>
       </form>
     </div>
