@@ -1,10 +1,9 @@
 import styles from './Cart.module.scss';
 import classNames from 'classnames';
 import { CartItem } from '@modules/CartItem/CartItem.jsx';
+import { goodsArray } from '@/goodsArray.js';
 
 export const Cart = () => {
-  const tempArr = [{ id: 1 }, { id: 2 }, { id: 3 }];
-
   const isOpen = true;
 
   if (!isOpen) return null;
@@ -32,9 +31,8 @@ export const Cart = () => {
 
         <ul className={ styles.list }>
           {
-            // TODO: Replace tempArr
-            tempArr.map(item => (
-              <CartItem key={ item.id } />
+            goodsArray.map(item => (
+              <CartItem key={ item.id } {...item} />
             ))
           }
         </ul>
