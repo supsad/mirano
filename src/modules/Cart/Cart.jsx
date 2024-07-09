@@ -2,9 +2,14 @@ import styles from './Cart.module.scss';
 import classNames from 'classnames';
 import { CartItem } from '@modules/CartItem/CartItem.jsx';
 import { goodsArray } from '@/goodsArray.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleCart } from '@redux/cartSlice.js';
 
 export const Cart = () => {
-  const isOpen = true;
+  const dispatch = useDispatch();
+  const isOpen = useSelector(state => state.cart.isOpen);
+
+  const handlerCartClose = () => dispatch(toggleCart());
 
   if (!isOpen) return null;
 
@@ -14,7 +19,7 @@ export const Cart = () => {
         <div className={ styles.header }>
           <h3 className={ styles.title }>Ваш заказ</h3>
 
-          <button>
+          <button onClick={ handlerCartClose }>
             <svg
               width="28"
               height="28"
@@ -32,7 +37,7 @@ export const Cart = () => {
         <ul className={ styles.list }>
           {
             goodsArray.map(item => (
-              <CartItem key={ item.id } {...item} />
+              <CartItem key={ item.id } { ...item } />
             ))
           }
         </ul>
