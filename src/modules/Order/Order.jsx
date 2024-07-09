@@ -1,5 +1,5 @@
 import styles from './Order.module.scss';
-import { OrderForm } from '../OrderForm/OrderForm.jsx';
+import { OrderForm } from '@modules/OrderForm/OrderForm.jsx';
 
 const Titles = {
   FORM: 'Оформить заказ',

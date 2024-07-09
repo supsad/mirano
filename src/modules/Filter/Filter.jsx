@@ -1,5 +1,5 @@
 import styles from './Filter.module.scss';
-import { Choices } from '../Choices/Choices.jsx';
+import { Choices } from '@modules/Choices/Choices.jsx';
 import classNames from 'classnames';
 
 export const Filter = ({ titleClass, containerClass }) => (

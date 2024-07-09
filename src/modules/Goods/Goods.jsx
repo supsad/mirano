@@ -1,7 +1,7 @@
 import styles from './Goods.module.scss';
-import { Cart } from '../Cart/Cart';
-import { goodsArray } from './goodsArray.js';
-import { Card } from '../Card/Card.jsx';
+import { Cart } from '@modules/Cart/Cart.jsx';
+import { Card } from '@modules/Card/Card.jsx';
+import { goodsArray } from '@/goodsArray.js';
 import classNames from 'classnames';
 
 export const Goods = ({ className }) => (

@@ -1,6 +1,6 @@
 import styles from './Cart.module.scss';
 import classNames from 'classnames';
-import { CartItem } from '../CartItem/CartItem.jsx';
+import { CartItem } from '@modules/CartItem/CartItem.jsx';
 
 export const Cart = () => {
   const tempArr = [{ id: 1 }, { id: 2 }, { id: 3 }];
