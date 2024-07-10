@@ -1,24 +1,40 @@
 import styles from './Order.module.scss';
 import { OrderForm } from '@modules/OrderForm/OrderForm.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { openOrder, closeOrder } from '@redux/orderSlice.js';
 
 const Titles = {
   FORM: 'Оформить заказ',
   NOTIFICATION: 'Заказ оформлен!'
 };
 
-export const Order = ({ type = '' }) => {
-  if (type === undefined || type === null || type === '') return null;
+export const Order = () => {
+  const isOpen = useSelector(state => state.order.isOpen);
+  const isOrder = false;
+  const dispatch = useDispatch();
+
+  const handleOderClose = ({ target, currentTarget }) => {
+    if (target === currentTarget || target.matches(`.${ styles.close }`)) {
+      dispatch(closeOrder());
+    }
+  }
+
+  if (!isOpen) return null;
 
   return (
-    <div className={ styles.order }>
+    <div className={ styles.order } onClick={ handleOderClose }>
       <div className={ styles.wrapper }>
-        <h2 className={ styles.title }>{ Titles[`${type?.toUpperCase()}`] }</h2>
-
         {
-          type?.toUpperCase() === Object.keys(Titles)[0] ? (
-            <OrderForm className={ styles.form } />
+          isOrder ? (
+            <>
+              <h2 className={ styles.title }>{ Titles.NOTIFICATION }</h2>
+              <p>Ваш номер заказа: 971f365a-caa1-4cdb-9446-bad2eff047e1</p>
+            </>
           ) : (
-            <p>Ваш номер заказа: 971f365a-caa1-4cdb-9446-bad2eff047e1</p>
+            <>
+              <h2 className={ styles.title }>{ Titles.FORM }</h2>
+              <OrderForm className={ styles.form } />
+            </>
           )
         }
 

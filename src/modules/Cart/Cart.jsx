@@ -4,12 +4,14 @@ import { CartItem } from '@modules/CartItem/CartItem.jsx';
 import { goodsArray } from '@/goodsArray.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCart } from '@redux/cartSlice.js';
+import { openOrder } from '@redux/orderSlice.js';
 
 export const Cart = () => {
   const dispatch = useDispatch();
   const isOpen = useSelector(state => state.cart.isOpen);
 
   const handlerCartClose = () => dispatch(toggleCart());
+  const handlerOrderOpen = () => dispatch(openOrder());
 
   if (!isOpen) return null;
 
@@ -43,7 +45,11 @@ export const Cart = () => {
         </ul>
 
         <div className={ styles.footer }>
-          <button className={ styles['order-btn'] }>Оформить</button>
+          <button
+            className={ styles['order-btn'] }
+            onClick={ handlerOrderOpen }>
+            Оформить
+          </button>
           <p className={ styles.price }>0&nbsp;₽</p>
         </div>
       </div>
