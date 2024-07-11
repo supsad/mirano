@@ -22,33 +22,18 @@
   min-height: 310px;
 }
 
-// FIXME: duplicated in subscribe
-.title {
-  font-family: $second-family;
-  font-weight: 400;
-  font-size: 50px;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-align: center;
-  color: $green;
-  margin-bottom: 40px;
-
-  @include tablet {
-    font-size: 32px;
-    margin-bottom: 24px;
-  }
-}
-
 .list {
-  // FIXME: 693px - 521px 1 column (need 2)
   display: grid;
-  grid-template-columns: repeat(auto-fit, 310px);
+  grid-template-columns: repeat(auto-fill, 310px);
   margin: 0 auto;
   justify-content: center;
   gap: 24px 20px;
 
-  @include mobile {
+  @include tablet {
     grid-template-columns: repeat(2, minmax(140px, 1fr));
+  }
+
+  @include mobile {
     column-gap: 12px;
   }
 }

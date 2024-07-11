@@ -4,11 +4,11 @@ import { Card } from '@modules/Card/Card.jsx';
 import { goodsArray } from '@/goodsArray.js';
 import classNames from 'classnames';
 
-export const Goods = ({ className }) => (
+export const Goods = ({ containerClass, titleClass }) => (
   <section className={ styles.goods }>
-    <div className={ classNames(className, styles.container) }>
+    <div className={ classNames(containerClass, styles.container) }>
       <div className={ styles.box }>
-        <h2 className={ styles.title }>Цветы</h2>
+        <h2 className={ titleClass }>Цветы</h2>
 
         <ul className={ styles.list }>
           {
