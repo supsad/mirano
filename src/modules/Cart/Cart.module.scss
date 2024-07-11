@@ -12,8 +12,8 @@
     top: 50%;
     right: 27px;
     bottom: 0;
+    min-height: 452px;
     height: 95vh;
-    max-height: 778px;
     transform: translateY(-50%);
     overflow-y: auto;
     border-radius: 32px;
@@ -37,8 +37,7 @@
   max-width: 100%;
   width: 310px;
   background-color: $white;
-  min-height: 452px;
-  max-height: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
 
