@@ -1,7 +1,7 @@
 import styles from './Order.module.scss';
 import { OrderForm } from '@modules/OrderForm/OrderForm.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { openOrder, closeOrder } from '@redux/orderSlice.js';
+import { closeOrder } from '@store/reducers/orderSlice.js';
 
 const Titles = {
   FORM: 'Оформить заказ',
@@ -13,7 +13,7 @@ export const Order = () => {
   const isOrder = false;
   const dispatch = useDispatch();
 
-  const handleOderClose = ({ target, currentTarget }) => {
+  const onOrderClose = ({ target, currentTarget }) => {
     if (target === currentTarget || target.matches(`.${ styles.close }`)) {
       dispatch(closeOrder());
     }
@@ -22,7 +22,7 @@ export const Order = () => {
   if (!isOpen) return null;
 
   return (
-    <div className={ styles.order } onClick={ handleOderClose }>
+    <div className={ styles.order } onClick={ onOrderClose }>
       <div className={ styles.wrapper }>
         {
           isOrder ? (
