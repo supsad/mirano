@@ -9,21 +9,28 @@ import { Order } from '@modules/Order/Order.jsx';
 export const App = () => {
   return (
     <>
-      <Header className="container" />
+      <Header containerClass='container'
+              buttonClass='button'
+      />
 
       <main>
-        <Hero className="container" />
+        <Hero className='container' />
 
-        <Filter
-          titleClass="visually-hidden"
-          containerClass="container" />
+        <Filter titleClass='visually-hidden'
+                containerClass='container'
+        />
 
-        <Goods className="container" />
+        <Goods containerClass='container'
+               titleClass='title'
+        />
 
-        <Subscribe className="container" />
+        <Subscribe containerClass='container'
+                   titleClass='title'
+                   buttonClass='button'
+        />
       </main>
 
-      <Footer className="container" />
+      <Footer className='container' />
 
       <Order />
     </>

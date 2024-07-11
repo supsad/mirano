@@ -10,22 +10,6 @@
   }
 }
 
-.title {
-  font-family: $second-family;
-  font-weight: 400;
-  font-size: 50px;
-  line-height: 1.2;
-  text-transform: uppercase;
-  text-align: center;
-  color: $green;
-  margin-bottom: 40px;
-
-  @include tablet {
-    font-size: 32px;
-    margin-bottom: 24px;
-  }
-}
-
 .form {
   position: relative;
   max-width: 524px;
@@ -48,19 +32,4 @@
   &::-webkit-search-cancel-button {
     display: none;
   }
-}
-
-// FIXME: duplicated fragment Header.module
-.button {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 32px;
-  background-color: $light-orange;
 }
