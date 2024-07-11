@@ -10,7 +10,7 @@ export default defineConfig({
       { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
       { find: '@scss', replacement: fileURLToPath(new URL('./src/scss', import.meta.url)) },
       { find: '@modules', replacement: fileURLToPath(new URL('./src/modules', import.meta.url)) },
-      { find: '@redux', replacement: fileURLToPath(new URL('./src/redux', import.meta.url)) },
+      { find: '@store', replacement: fileURLToPath(new URL('./src/store', import.meta.url)) },
     ],
   },
 })
