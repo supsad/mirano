@@ -10,7 +10,7 @@ const Titles = {
 
 export const Order = () => {
   const isOpen = useSelector(state => state.order.isOpen);
-  const isOrder = false;
+  const isTakeOrderSuccess = false;
   const dispatch = useDispatch();
 
   const onOrderClose = ({ target, currentTarget }) => {
@@ -25,7 +25,7 @@ export const Order = () => {
     <div className={ styles.order } onClick={ onOrderClose }>
       <div className={ styles.wrapper }>
         {
-          isOrder ? (
+          isTakeOrderSuccess ? (
             <>
               <h2 className={ styles.title }>{ Titles.NOTIFICATION }</h2>
               <p>Ваш номер заказа: 971f365a-caa1-4cdb-9446-bad2eff047e1</p>
