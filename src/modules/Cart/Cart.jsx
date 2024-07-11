@@ -1,12 +1,12 @@
 import styles from './Cart.module.scss';
 import { CartItem } from '@modules/CartItem/CartItem.jsx';
-import { goodsArray } from '@/goodsArray.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCart } from '@store/reducers/cartSlice.js';
 import { openOrder } from '@store/reducers/orderSlice.js';
 
 export const Cart = () => {
   const dispatch = useDispatch();
+  const items = useSelector(state => state.cart.items)
   const isOpen = useSelector(state => state.cart.isOpen);
 
   const handlerCartClose = () => dispatch(toggleCart());
@@ -36,7 +36,7 @@ export const Cart = () => {
 
         <ul className={ styles.list }>
           {
-            goodsArray.map(item => (
+            items.map(item => (
               <CartItem key={ item.id } { ...item } />
             ))
           }
