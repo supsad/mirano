@@ -7,6 +7,10 @@
   align-items: center;
   gap: 32px;
   flex-wrap: wrap;
+
+  @include tablet {
+    justify-content: center;
+  }
 }
 
 .group {
@@ -16,9 +20,14 @@
   padding: 0;
   margin: 0;
   gap: 12px;
+  z-index: 2;
 
   &_choices {
-    gap: 64px;
+    gap: 35px;
+
+    @media (min-width: 1360px) {
+      gap: 64px;
+    }
 
     @include mobile {
       gap: 40px;
@@ -83,6 +92,7 @@
   margin: 0;
   display: flex;
   gap: 8px;
+  z-index: 1;
 }
 
 .input-price {

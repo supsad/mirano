@@ -24,7 +24,8 @@ export const Filter = ({ titleClass, containerClass }) => {
                    defaultChecked
             />
             <label className={ classNames(styles.label, styles.label_flower) }
-                   htmlFor="flower">
+                   htmlFor="flower"
+            >
               Цветы
             </label>
 
@@ -35,7 +36,8 @@ export const Filter = ({ titleClass, containerClass }) => {
                    id="toys"
             />
             <label className={ classNames(styles.label, styles.label_toys) }
-                   htmlFor="toys">
+                   htmlFor="toys"
+            >
               Игрушки
             </label>
 
@@ -46,15 +48,18 @@ export const Filter = ({ titleClass, containerClass }) => {
                    id="postcard"
             />
             <label className={ classNames(styles.label, styles.label_postcard) }
-                   htmlFor="postcard">
+                   htmlFor="postcard"
+            >
               Открытки
             </label>
           </fieldset>
 
           <fieldset className={ classNames(styles.group, styles.group_choices) }>
             <Choices buttonLabel={ 'Цена' }
+                     onToggle={ () => handleChoicesToggle(0) }
                      isOpen={ openChoices === 0 }
-                     onToggle={ () => handleChoicesToggle(0) }>
+                     position={ 'left' }
+            >
               <fieldset className={ styles.price }>
                 <input className={ styles['input-price'] }
                        type="text"
@@ -71,8 +76,10 @@ export const Filter = ({ titleClass, containerClass }) => {
 
 
             <Choices buttonLabel={ 'Тип товара' }
+                     onToggle={ () => handleChoicesToggle(1) }
                      isOpen={ openChoices === 1 }
-                     onToggle={ () => handleChoicesToggle(1) }>
+                     position={ 'right' }
+            >
               <ul>
                 <li className={ styles['type-item'] }>
                   <button className={ styles['type-button'] } type="button">Монобукеты</button>
