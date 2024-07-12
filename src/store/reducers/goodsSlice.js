@@ -1,27 +1,41 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { APU_URL } from '@/const.js';
+import { APU_URL } from '@/constants.js';
 
 const PRODUCT_URL = '/api/products';
 
 export const fetchGoods = createAsyncThunk(
   'goods/fetchGoods',
-  async () => {
-    const response = await fetch(`${ APU_URL }${ PRODUCT_URL }`);
+  async (params) => {
+    const queryString = new URLSearchParams(params).toString();
+    const response = await fetch(
+      `${ APU_URL }${ PRODUCT_URL }${ queryString ? `?${ queryString }` : '' }`
+    );
 
     return await response.json();
-  }
+  },
 );
 
 const initialState = {
   items: [],
   status: 'idle',
   error: null,
+  type: {
+    'default-type': 'bouquets',
+    rendered: null,
+    title: 'Цветы',
+  },
 };
 
 const GoodsSlice = createSlice({
   name: 'goods',
   initialState,
-  reducers: {},
+  reducers: {
+    setGoodsType: (state, action) => {
+      const { rendered, title } = action.payload;
+      state.type.rendered = rendered;
+      state.type.title = title;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGoods.pending, (state) => {
@@ -37,5 +51,7 @@ const GoodsSlice = createSlice({
       });
   },
 });
+
+export const { setGoodsType } = GoodsSlice.actions;
 
 export default GoodsSlice.reducer

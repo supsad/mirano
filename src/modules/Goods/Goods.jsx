@@ -13,8 +13,10 @@ export const Goods = ({ containerClass, titleClass }) => {
   const {
     items: goods,
     status: goodsStatus,
-    error
+    error,
+    type: goodsType
   } = useSelector(state => state.goods);
+  const { title: goodsTitle } = goodsType;
 
   useEffect(() => {
     if (goodsStatus !== 'idle') return;
@@ -48,7 +50,7 @@ export const Goods = ({ containerClass, titleClass }) => {
     <section className={ styles.goods }>
       <div className={ classNames(containerClass, styles.container) }>
         <div className={ styles.box } style={{ position: 'relative' }}>
-          <h2 className={ titleClass }>Цветы</h2>
+          <h2 className={ titleClass }>{ goodsTitle }</h2>
 
           { content }
         </div>
