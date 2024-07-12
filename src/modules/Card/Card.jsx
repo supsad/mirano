@@ -1,12 +1,13 @@
 import styles from './Card.module.scss';
 import { useDispatch } from 'react-redux';
-import { addItemToCart } from '@store/reducers/cartSlice.js';
+import { addItemToCart, setItemCountToCart } from '@store/reducers/cartSlice.js';
 
 export const Card = ({ id, img, title, dateDelivery, price }) => {
   const dispatch = useDispatch();
 
   const handlerAddToCart = () => {
     dispatch(addItemToCart({ id, img, title, dateDelivery, price }));
+    dispatch(setItemCountToCart());
   };
 
   return (
