@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchGoods } from '@store/reducers/goodsSlice.js';
-import { APU_URL } from '@/const.js';
+import { APU_URL } from '@/constants.js';
 import { Loader } from '@modules/Loader/Loader.jsx';
 
 export const Goods = ({ containerClass, titleClass }) => {
