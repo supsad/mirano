@@ -1,10 +1,11 @@
 import styles from './Filter.module.scss';
 import { Choices } from '@modules/Choices/Choices.jsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { fetchGoods, setGoodsTitle } from '@store/reducers/goodsSlice.js';
 import getValidFilters from '@utils/validFilters';
+import debounce from '@utils/debounce';
 
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
@@ -16,14 +17,36 @@ export const Filter = ({ titleClass, containerClass }) => {
     category: '',
   });
 
+  const prevFilterRef = useRef(filters);
+
+  const debouncedFetchGoods = useRef(
+    debounce((filters) => {
+      dispatch(fetchGoods(filters));
+    }, 500),
+  ).current;
+
+  useEffect(() => {
+    const prevFilters = prevFilterRef.current;
+    const validFilter = getValidFilters(filters);
+    
+    if (prevFilters.type !== filters.type) {
+      dispatch(fetchGoods(validFilter));
+    } else {
+      debouncedFetchGoods(filters);
+    }
+
+    prevFilterRef.current = filters;
+  }, [debouncedFetchGoods, dispatch, filters]);
+
   const handleTypeChange = ({ currentTarget }) => {
     if (currentTarget.value === filters.type) return;
-    setFilters({
+    const newFilters = {
       ...filters,
       type: currentTarget.value,
       minPrice: '',
       maxPrice: ''
-    });
+    };
+    setFilters(newFilters);
     dispatch(setGoodsTitle(currentTarget.labels[0].innerText));
   };
 
@@ -36,11 +59,6 @@ export const Filter = ({ titleClass, containerClass }) => {
       [name]: value ? parseInt(value, 10) : '',
     });
   };
-
-  useEffect(() => {
-    const validFilter = getValidFilters(filters);
-    dispatch(fetchGoods(validFilter));
-  }, [dispatch, filters]);
 
   // TODO: migrate in redux to control the closing state throughout the document
   const handleChoicesToggle = (index) => {
@@ -149,4 +167,4 @@ export const Filter = ({ titleClass, containerClass }) => {
       </div>
     </section>
   );
-}
+};
