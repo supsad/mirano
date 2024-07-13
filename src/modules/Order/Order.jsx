@@ -13,17 +13,19 @@ export const Order = () => {
   const isTakeOrderSuccess = false;
   const dispatch = useDispatch();
 
-  const onOrderClose = ({ target, currentTarget }) => {
-    if (target === currentTarget || target.matches(`.${ styles.close }`)) {
-      dispatch(closeOrder());
-    }
+  const onOrderClose = () => {
+    dispatch(closeOrder());
   }
 
   if (!isOpen) return null;
 
   return (
-    <div className={ styles.order } onClick={ onOrderClose }>
-      <div className={ styles.wrapper }>
+    <div className={ styles.order }
+         onClick={ onOrderClose }
+    >
+      <div className={ styles.wrapper }
+           onClick={ e => e.stopPropagation() }
+      >
         {
           isTakeOrderSuccess ? (
             <>
