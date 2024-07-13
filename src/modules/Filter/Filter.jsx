@@ -56,7 +56,7 @@ export const Filter = ({ titleClass, containerClass }) => {
 
     setFilters({
       ...filters,
-      [name]: value ? parseInt(value, 10) : '',
+      [name]: !isNaN(parseInt(value)) ? value : '',
     });
   };
 
