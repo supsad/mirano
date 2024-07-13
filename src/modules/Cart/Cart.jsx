@@ -3,19 +3,26 @@ import { CartItem } from '@modules/CartItem/CartItem.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCart } from '@store/reducers/cartSlice.js';
 import { openOrder } from '@store/reducers/orderSlice.js';
+import { useEffect, useRef } from 'react';
 
 export const Cart = () => {
   const dispatch = useDispatch();
-  const items = useSelector(state => state.cart.items)
-  const isOpen = useSelector(state => state.cart.isOpen);
+  const { isOpen, items } = useSelector(state => state.cart);
+
+  const cartRef = useRef(null);
 
   const handlerCartClose = () => dispatch(toggleCart());
   const handlerOrderOpen = () => dispatch(openOrder());
 
+  useEffect(() => {
+    if (!isOpen) return;
+    cartRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
-    <section className={ styles.cart }>
+    <section className={ styles.cart } ref={ cartRef }>
       <div className={ styles.container }>
         <div className={ styles.header }>
           <h3 className={ styles.title }>Ваш заказ</h3>
