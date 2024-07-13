@@ -25,12 +25,18 @@ export const Filter = ({ titleClass, containerClass }) => {
     }, 350),
   ).current;
 
+  // TODO: migrate in redux to control the closing state throughout the document
+  const handleChoicesToggle = (index) => {
+    setOpenChoices(openChoices === index ? null : index);
+  };
+
   useEffect(() => {
     const prevFilters = prevFilterRef.current;
     const validFilter = getValidFilters(filters);
     
     if (prevFilters.type !== filters.type) {
       dispatch(fetchGoods(validFilter));
+      handleChoicesToggle(null);
     } else {
       debouncedFetchGoods(filters);
     }
@@ -59,11 +65,6 @@ export const Filter = ({ titleClass, containerClass }) => {
       [name]: !isNaN(parseInt(value)) ? value : '',
     });
   };
-
-  // TODO: migrate in redux to control the closing state throughout the document
-  const handleChoicesToggle = (index) => {
-    setOpenChoices(openChoices === index ? null : index);
-  }
 
   return (
     <section>
