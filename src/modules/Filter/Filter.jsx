@@ -2,41 +2,36 @@ import styles from './Filter.module.scss';
 import { Choices } from '@modules/Choices/Choices.jsx';
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
-import { useDispatch } from 'react-redux';
-import { fetchGoods, setGoodsTitle } from '@store/reducers/goodsSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchGoods, setGoodsTitle } from '@store/reducers/goodsSlice';
 import getValidFilters from '@utils/validFilters';
 import debounce from '@utils/debounce';
+import { setFilters } from '@store/reducers/filtersSlice';
 
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
-  const [openChoices, setOpenChoices] = useState(null);
-  const [filters, setFilters] = useState({
-    type: 'bouquets',
-    minPrice: '',
-    maxPrice: '',
-    category: '',
-  });
+  const [openChoice, setOpenChoice] = useState(null);
+  const filters = useSelector(state => state.filters);
 
   const prevFilterRef = useRef(filters);
 
   const debouncedFetchGoods = useRef(
     debounce((filters) => {
       dispatch(fetchGoods(filters));
-    }, 350),
+    }, 400),
   ).current;
 
-  // TODO: migrate in redux to control the closing state throughout the document
   const handleChoicesToggle = (index) => {
-    setOpenChoices(openChoices === index ? null : index);
+    setOpenChoice(openChoice === index ? null : index);
   };
 
   useEffect(() => {
     const prevFilters = prevFilterRef.current;
     const validFilter = getValidFilters(filters);
-    
+
     if (prevFilters.type !== filters.type) {
+      setOpenChoice(null);
       dispatch(fetchGoods(validFilter));
-      handleChoicesToggle(null);
     } else {
       debouncedFetchGoods(filters);
     }
@@ -46,13 +41,7 @@ export const Filter = ({ titleClass, containerClass }) => {
 
   const handleTypeChange = ({ currentTarget }) => {
     if (currentTarget.value === filters.type) return;
-    const newFilters = {
-      ...filters,
-      type: currentTarget.value,
-      minPrice: '',
-      maxPrice: ''
-    };
-    setFilters(newFilters);
+    dispatch(setFilters({ type: currentTarget.value }));
     dispatch(setGoodsTitle(currentTarget.labels[0].innerText));
   };
 
@@ -60,10 +49,10 @@ export const Filter = ({ titleClass, containerClass }) => {
     if (currentTarget.value === filters.type) return;
     const { name, value } = currentTarget;
 
-    setFilters({
+    dispatch(setFilters({
       ...filters,
       [name]: !isNaN(parseInt(value)) ? value : '',
-    });
+    }));
   };
 
   return (
@@ -118,7 +107,7 @@ export const Filter = ({ titleClass, containerClass }) => {
           <fieldset className={ classNames(styles.group, styles.group_choices) }>
             <Choices buttonLabel={ 'Цена' }
                      onToggle={ () => handleChoicesToggle(0) }
-                     isOpen={ openChoices === 0 }
+                     isOpen={ openChoice === 0 }
                      position={ 'left' }
             >
               <fieldset className={ styles.price }>
@@ -142,7 +131,7 @@ export const Filter = ({ titleClass, containerClass }) => {
 
             <Choices buttonLabel={ 'Тип товара' }
                      onToggle={ () => handleChoicesToggle(1) }
-                     isOpen={ openChoices === 1 }
+                     isOpen={ openChoice === 1 }
                      position={ 'right' }
             >
               <ul>
