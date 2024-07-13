@@ -1,13 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { API_URL } from '@/constants.js';
 
-const GoodsTitle = {
-  BOUQUETS: 'Цветы',
-  TOYS: 'Игрушки',
-  POSTCARDS: 'Открытки',
-  DEFAULT: 'Неизвестная категория',
-};
-
 export const fetchGoods = createAsyncThunk(
   'goods/fetchGoods',
   async (params) => {
@@ -24,17 +17,22 @@ const initialState = {
   items: [],
   status: 'idle',
   error: null,
-  title: GoodsTitle.BOUQUETS,
+  title: {
+    value: 'Цветы',
+    pageYCoord: null,
+  },
 };
 
 const GoodsSlice = createSlice({
   name: 'goods',
   initialState,
   reducers: {
-    setGoodsTitle: (state, action) => {
-      const title = action.payload;
-      state.title = Object.values(GoodsTitle).find(type => type === title)
-        || GoodsTitle.DEFAULT;
+    setGoodsTitleValue: (state, action) => {
+      state.title.value = action.payload;
+    },
+
+    setGoodsTitleCoords: (state, action) => {
+      state.title.pageYCoord = window.scrollY + action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -53,6 +51,9 @@ const GoodsSlice = createSlice({
   },
 });
 
-export const { setGoodsTitle } = GoodsSlice.actions;
+export const {
+  setGoodsTitleValue,
+  setGoodsTitleCoords,
+} = GoodsSlice.actions;
 
 export default GoodsSlice.reducer

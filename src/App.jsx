@@ -22,28 +22,28 @@ export const App = () => {
 
   return (
     <>
-      <Header containerClass='container'
-              buttonClass='button'
+      <Header containerClass="container"
+              buttonClass="button"
       />
 
       <main>
-        <Hero className='container' />
+        <Hero className="container" />
 
-        <Filter titleClass='visually-hidden'
-                containerClass='container'
+        <Filter titleClass="visually-hidden"
+                containerClass="container"
         />
 
-        <Goods containerClass='container'
-               titleClass='title'
+        <Goods containerClass="container"
+               titleClass="title"
         />
 
-        <Subscribe containerClass='container'
-                   titleClass='title'
-                   buttonClass='button'
+        <Subscribe containerClass="container"
+                   titleClass="title"
+                   buttonClass="button"
         />
       </main>
 
-      <Footer className='container' />
+      <Footer className="container" />
 
       <Order />
     </>

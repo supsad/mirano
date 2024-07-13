@@ -2,12 +2,39 @@ import styles from './Header.module.scss';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCart } from '@store/reducers/cartSlice.js';
+import isValueString from '@utils/isValueString';
+import { fetchGoods, setGoodsTitleValue } from '@store/reducers/goodsSlice';
+import { clearFilters, setSearch } from '@store/reducers/filtersSlice';
+import { useEffect, useRef } from 'react';
 
 export const Header = ({ containerClass, buttonClass }) => {
   const dispatch = useDispatch();
   const cartCount = useSelector(state => state.cart.count);
+  const coordYToScroll = useSelector(state => state.goods.title.pageYCoord);
+  const search = useSelector(state => state.filters.search);
+
+  const inputRef = useRef(null);
+  const prevSearchRef = useRef(search);
+
+  useEffect(() => {
+    if (search.length === 0) return;
+
+    const validSearch = isValueString(search) ? { search: search } : { list: search };
+    dispatch(fetchGoods(validSearch));
+  }, [dispatch, search]);
 
   const handlerCartToggle = () => dispatch(toggleCart());
+
+  const handleSearchPressing = (e) => {
+    e.preventDefault();
+
+    if (prevSearchRef === search) return;
+
+    dispatch(clearFilters());
+    dispatch(setGoodsTitleValue('Найденные товары'));
+    dispatch(setSearch(inputRef.current.value));
+    window.scrollTo({ top: coordYToScroll, behavior: 'smooth' });
+  };
 
   return (
     <header className={ styles.header }>
@@ -17,9 +44,13 @@ export const Header = ({ containerClass, buttonClass }) => {
                  type="search"
                  name="search"
                  placeholder="Букет из роз"
+                 ref={ inputRef }
           />
 
-          <button className={ buttonClass } aria-label="начать поиск">
+          <button className={ buttonClass }
+                  aria-label="Начать поиск"
+                  onClick={ handleSearchPressing }
+          >
             <svg width="20"
                  height="20"
                  viewBox="0 0 20 20"

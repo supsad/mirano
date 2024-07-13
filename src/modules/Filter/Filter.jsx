@@ -3,10 +3,11 @@ import { Choices } from '@modules/Choices/Choices.jsx';
 import { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGoods, setGoodsTitle } from '@store/reducers/goodsSlice';
+import { fetchGoods, setGoodsTitleValue } from '@store/reducers/goodsSlice';
 import getValidFilters from '@utils/validFilters';
 import debounce from '@utils/debounce';
-import { setFilters } from '@store/reducers/filtersSlice';
+import { clearFilters, setFilters } from '@store/reducers/filtersSlice';
+import isValueString from '@utils/isValueString';
 
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
@@ -25,6 +26,8 @@ export const Filter = ({ titleClass, containerClass }) => {
     const prevFilters = prevFilterRef.current;
     const validFilter = getValidFilters(filters);
 
+    if (Object.keys(validFilter).length === 0) return;
+
     if (prevFilters.type !== filters.type) {
       setOpenChoice(null);
       dispatch(fetchGoods(validFilter));
@@ -37,15 +40,16 @@ export const Filter = ({ titleClass, containerClass }) => {
 
   const handleTypeChange = ({ currentTarget }) => {
     if (currentTarget.value === filters.type) return;
-    dispatch(setFilters({ type: currentTarget.value, minPrice: '', maxPrice: '' }));
-    dispatch(setGoodsTitle(currentTarget.labels[0].innerText));
+    dispatch(clearFilters());
+    dispatch(setFilters({ type: currentTarget.value }));
+    dispatch(setGoodsTitleValue(currentTarget.labels[0].innerText));
   };
 
   const handlePriceChange = ({ currentTarget }) => {
     if (currentTarget.value === filters.type) return;
     const { name, value } = currentTarget;
 
-    dispatch(setFilters({ [name]: !isNaN(parseInt(value)) ? value : '' }));
+    dispatch(setFilters({ [name]: !isValueString(value) ? value : '' }));
   };
 
   const handleChoicesToggle = (index) => {
