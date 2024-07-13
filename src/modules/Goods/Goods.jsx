@@ -3,7 +3,7 @@ import { Cart } from '@modules/Cart/Cart.jsx';
 import { Card } from '@modules/Card/Card.jsx';
 import classNames from 'classnames';
 import { useSelector } from 'react-redux';
-import { APU_URL } from '@/constants.js';
+import { API_URL } from '@/constants.js';
 import { Loader } from '@modules/Loader/Loader.jsx';
 
 export const Goods = ({ containerClass, titleClass }) => {
@@ -24,7 +24,7 @@ export const Goods = ({ containerClass, titleClass }) => {
         goods.map(item => (
           <li key={ item.id }>
             <Card id={ item.id }
-                  img={ `${ APU_URL }${ item.photoUrl }` }
+                  img={ `${ API_URL }${ item.photoUrl }` }
                   title={ item.name }
                   dateDelivery={ 'сегодня в 14:00' }
                   price={ item.price }

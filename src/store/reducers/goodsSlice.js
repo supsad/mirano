@@ -1,9 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { APU_URL } from '@/constants.js';
+import { API_URL } from '@/constants.js';
 
-const PRODUCT_URL = '/api/products';
-
-const GoodsType = {
+const GoodsTitle = {
   BOUQUETS: 'Цветы',
   TOYS: 'Игрушки',
   POSTCARDS: 'Открытки',
@@ -15,7 +13,7 @@ export const fetchGoods = createAsyncThunk(
   async (params) => {
     const queryString = new URLSearchParams(params).toString();
     const response = await fetch(
-      `${ APU_URL }${ PRODUCT_URL }${ queryString ? `?${ queryString }` : '' }`
+      `${ API_URL }/api/products${ queryString ? `?${ queryString }` : '' }`
     );
 
     return await response.json();
@@ -26,7 +24,7 @@ const initialState = {
   items: [],
   status: 'idle',
   error: null,
-  title: GoodsType.BOUQUETS,
+  title: GoodsTitle.BOUQUETS,
 };
 
 const GoodsSlice = createSlice({
@@ -35,8 +33,8 @@ const GoodsSlice = createSlice({
   reducers: {
     setGoodsTitle: (state, action) => {
       const title = action.payload;
-      state.title = Object.values(GoodsType).find(type => type === title)
-        || GoodsType.DEFAULT;
+      state.title = Object.values(GoodsTitle).find(type => type === title)
+        || GoodsTitle.DEFAULT;
     },
   },
   extraReducers: (builder) => {

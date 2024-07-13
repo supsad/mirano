@@ -1,12 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { APU_URL } from '@/constants';
-
-const REGISTER_URL = '/api/cart/register';
+import { API_URL } from '@/constants';
 
 export const registerCart = createAsyncThunk(
   'cart/registerCart',
   async () => {
-    const response = fetch(`${ APU_URL }${ REGISTER_URL }`, {
+    const response = fetch(`${ API_URL }/api/cart/register`, {
       method: 'POST',
       credentials: 'include',
     });
