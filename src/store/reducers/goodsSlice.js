@@ -35,7 +35,6 @@ const GoodsSlice = createSlice({
   reducers: {
     setGoodsTitle: (state, action) => {
       const title = action.payload;
-
       state.title = Object.values(GoodsType).find(type => type === title)
         || GoodsType.DEFAULT;
     },

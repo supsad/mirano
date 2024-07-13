@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { fetchGoods, setGoodsTitle } from '@store/reducers/goodsSlice.js';
+import getValidFilters from '@utils/validFilters';
 
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
@@ -16,12 +17,29 @@ export const Filter = ({ titleClass, containerClass }) => {
   });
 
   const handleTypeChange = ({ currentTarget }) => {
-    setFilters({ ...filters, type: currentTarget.value });
+    if (currentTarget.value === filters.type) return;
+    setFilters({
+      ...filters,
+      type: currentTarget.value,
+      minPrice: '',
+      maxPrice: ''
+    });
     dispatch(setGoodsTitle(currentTarget.labels[0].innerText));
   };
 
+  const handlePriceChange = ({ currentTarget }) => {
+    if (currentTarget.value === filters.type) return;
+    const { name, value } = currentTarget;
+
+    setFilters({
+      ...filters,
+      [name]: value ? parseInt(value, 10) : '',
+    });
+  };
+
   useEffect(() => {
-    dispatch(fetchGoods(filters));
+    const validFilter = getValidFilters(filters);
+    dispatch(fetchGoods(validFilter));
   }, [dispatch, filters]);
 
   // TODO: migrate in redux to control the closing state throughout the document
@@ -89,11 +107,15 @@ export const Filter = ({ titleClass, containerClass }) => {
                        type="text"
                        name="minPrice"
                        placeholder="от"
+                       value={ filters.minPrice }
+                       onChange={ handlePriceChange }
                 />
                 <input className={ styles['input-price'] }
                        type="text"
                        name="maxPrice"
                        placeholder="до"
+                       value={ filters.maxPrice }
+                       onChange={ handlePriceChange }
                 />
               </fieldset>
             </Choices>
