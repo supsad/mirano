@@ -17,11 +17,8 @@ const cartSlice = createSlice({
     addItemToCart: (state, action) => {
       const {
         id,
-        img,
-        title,
-        dateDelivery,
-        price,
         count = 1,
+        ...params
       } = action.payload;
 
       const existingItems = state.items.find(item => item.id === id);
@@ -30,11 +27,8 @@ const cartSlice = createSlice({
         ? existingItems.count = count
         : state.items.push({
           id,
-          img,
-          title,
-          dateDelivery,
-          price,
           count,
+          ...params,
         });
 
       localStorage.setItem('cartItems', JSON.stringify(state.items));
