@@ -33,14 +33,16 @@ export const Goods = ({ containerClass, titleClass }) => {
         ))
       }
     </ul>
-  } else if (error) {
+  }
+
+  if (error) {
     content = <p>{ error }</p>
   }
 
   return (
     <section className={ styles.goods }>
       <div className={ classNames(containerClass, styles.container) }>
-        <div className={ styles.box } style={{ position: 'relative' }}>
+        <div className={ styles.box } style={ { position: 'relative' } }>
           <h2 className={ titleClass }>{ goodsTitle }</h2>
 
           { content }
