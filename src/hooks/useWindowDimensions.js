@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import debounce from '@utils/debounce';
 
-export default function useWindowDimensions(delay = 0) {
+const useWindowDimensions = (delay = 0) => {
   const hasWindow =  typeof window !== 'undefined';
 
   const getWindowDimensions = useCallback(() => {
@@ -11,14 +11,14 @@ export default function useWindowDimensions(delay = 0) {
   }, [hasWindow]);
   
   const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
+    getWindowDimensions(),
   );
 
   useEffect(() => {
     if (hasWindow) {
       const handleResize = () => {
         setWindowDimensions(getWindowDimensions());
-      }
+      };
 
       const debouncedHandleResize = debounce(handleResize, delay);
       window.addEventListener('resize', debouncedHandleResize);
@@ -27,4 +27,6 @@ export default function useWindowDimensions(delay = 0) {
   }, [delay, getWindowDimensions, hasWindow]);
   
   return windowDimensions;
-}
+};
+
+export default useWindowDimensions;

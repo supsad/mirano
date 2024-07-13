@@ -1,6 +1,6 @@
 import styles from './Card.module.scss';
 import { useDispatch } from 'react-redux';
-import { addItemToCart, setItemCountToCart } from '@store/reducers/cartSlice.js';
+import { addItemToCart, setItemsCountToCart } from '@store/reducers/cartSlice.js';
 import useHover from '@hooks/useHover.js';
 
 export const Card = ({ id, img, title, dateDelivery, price }) => {
@@ -12,7 +12,7 @@ export const Card = ({ id, img, title, dateDelivery, price }) => {
 
   const handlerAddToCart = () => {
     dispatch(addItemToCart({ id, img, title, dateDelivery, price }));
-    dispatch(setItemCountToCart());
+    dispatch(setItemsCountToCart());
   };
 
   return (
@@ -30,7 +30,7 @@ export const Card = ({ id, img, title, dateDelivery, price }) => {
                   onClick={ handlerAddToCart }
                   { ...hoverButtonProps }
           >
-            { isButtonHovered ? 'В корзину' : <span>{ price }&nbsp;₽</span> }
+            { isButtonHovered ? 'В корзину' : `${price}\u00A0₽` }
           </button>
         </div>
       </div>

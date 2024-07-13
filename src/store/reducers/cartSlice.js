@@ -40,7 +40,7 @@ const cartSlice = createSlice({
       localStorage.setItem('cartItems', JSON.stringify(state.items));
     },
 
-    setItemCountToCart: (state) => {
+    setItemsCountToCart: (state) => {
       const items = state.items;
 
       state.count = items.reduce((acc, item) => {
@@ -55,7 +55,7 @@ const cartSlice = createSlice({
 export const {
   toggleCart,
   addItemToCart,
-  setItemCountToCart,
+  setItemsCountToCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

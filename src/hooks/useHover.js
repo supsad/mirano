@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function useHover() {
+const useHover = () => {
   const [hovering, setHovering] = useState(false);
   const onHoverProps = {
     onMouseEnter: () => setHovering(true),
@@ -8,4 +8,6 @@ export default function useHover() {
   };
 
   return [hovering, onHoverProps];
-}
+};
+
+export default useHover;
