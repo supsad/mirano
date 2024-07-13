@@ -22,7 +22,7 @@ export const Filter = ({ titleClass, containerClass }) => {
   const debouncedFetchGoods = useRef(
     debounce((filters) => {
       dispatch(fetchGoods(filters));
-    }, 500),
+    }, 350),
   ).current;
 
   useEffect(() => {
