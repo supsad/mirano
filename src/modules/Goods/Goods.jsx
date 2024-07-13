@@ -2,26 +2,17 @@ import styles from './Goods.module.scss';
 import { Cart } from '@modules/Cart/Cart.jsx';
 import { Card } from '@modules/Card/Card.jsx';
 import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { fetchGoods } from '@store/reducers/goodsSlice.js';
+import { useSelector } from 'react-redux';
 import { APU_URL } from '@/constants.js';
 import { Loader } from '@modules/Loader/Loader.jsx';
 
 export const Goods = ({ containerClass, titleClass }) => {
-  const dispatch = useDispatch();
   const {
     items: goods,
     status: goodsStatus,
     error,
-    type: goodsType
+    title: goodsTitle
   } = useSelector(state => state.goods);
-  const { title: goodsTitle } = goodsType;
-
-  useEffect(() => {
-    if (goodsStatus !== 'idle') return;
-    dispatch(fetchGoods());
-  }, [dispatch, goodsStatus]);
 
   let content = null;
 

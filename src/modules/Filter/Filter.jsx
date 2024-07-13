@@ -2,32 +2,27 @@ import styles from './Filter.module.scss';
 import { Choices } from '@modules/Choices/Choices.jsx';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchGoods, setGoodsType } from '@store/reducers/goodsSlice.js';
+import { useDispatch } from 'react-redux';
+import { fetchGoods, setGoodsTitle } from '@store/reducers/goodsSlice.js';
 
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
   const [openChoices, setOpenChoices] = useState(null);
-  const [firstGoodsRender, setFirstGoodsRender] = useState(true);
-  const {
-    'default-type': defaultGoodsType,
-    rendered: whatGoodsRendered,
-    title: defaultGoodsTitle } = useSelector(state => state.goods.type);
+  const [filters, setFilters] = useState({
+    type: 'bouquets',
+    minPrice: '',
+    maxPrice: '',
+    category: '',
+  });
+
+  const handleTypeChange = ({ currentTarget }) => {
+    setFilters({ ...filters, type: currentTarget.value });
+    dispatch(setGoodsTitle(currentTarget.labels[0].innerText));
+  };
 
   useEffect(() => {
-    if (firstGoodsRender) {
-      dispatch(fetchGoods({ type: defaultGoodsType }));
-      dispatch(setGoodsType({ rendered: defaultGoodsType, title: defaultGoodsTitle }));
-      setFirstGoodsRender(false);
-    }
-  }, [defaultGoodsTitle, defaultGoodsType, dispatch, firstGoodsRender]);
-
-  const handleTypeToggle = ({ currentTarget }) => {
-    if (currentTarget.value === whatGoodsRendered) return;
-
-    dispatch(fetchGoods({ type: currentTarget.value }));
-    dispatch(setGoodsType({ rendered: currentTarget.value, title: currentTarget.labels[0].innerText }));
-  };
+    dispatch(fetchGoods(filters));
+  }, [dispatch, filters]);
 
   // TODO: migrate in redux to control the closing state throughout the document
   const handleChoicesToggle = (index) => {
@@ -45,8 +40,8 @@ export const Filter = ({ titleClass, containerClass }) => {
                    name="type"
                    value="bouquets"
                    id="flower"
-                   defaultChecked
-                   onClick={ handleTypeToggle }
+                   checked={ 'bouquets' === filters.type }
+                   onClick={ handleTypeChange }
             />
             <label className={ classNames(styles.label, styles.label_flower) }
                    htmlFor="flower"
@@ -59,7 +54,8 @@ export const Filter = ({ titleClass, containerClass }) => {
                    name="type"
                    value="toys"
                    id="toys"
-                   onClick={ handleTypeToggle }
+                   checked={ 'toys' === filters.type }
+                   onClick={ handleTypeChange }
             />
             <label className={ classNames(styles.label, styles.label_toys) }
                    htmlFor="toys"
@@ -72,7 +68,8 @@ export const Filter = ({ titleClass, containerClass }) => {
                    name="type"
                    value="postcards"
                    id="postcard"
-                   onClick={ handleTypeToggle }
+                   checked={ 'postcards' === filters.type }
+                   onClick={ handleTypeChange }
             />
             <label className={ classNames(styles.label, styles.label_postcard) }
                    htmlFor="postcard"

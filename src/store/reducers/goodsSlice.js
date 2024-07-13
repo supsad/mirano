@@ -3,6 +3,13 @@ import { APU_URL } from '@/constants.js';
 
 const PRODUCT_URL = '/api/products';
 
+const GoodsType = {
+  BOUQUETS: 'Цветы',
+  TOYS: 'Игрушки',
+  POSTCARDS: 'Открытки',
+  DEFAULT: 'Неизвестная категория',
+};
+
 export const fetchGoods = createAsyncThunk(
   'goods/fetchGoods',
   async (params) => {
@@ -19,21 +26,18 @@ const initialState = {
   items: [],
   status: 'idle',
   error: null,
-  type: {
-    'default-type': 'bouquets',
-    rendered: null,
-    title: 'Цветы',
-  },
+  title: GoodsType.BOUQUETS,
 };
 
 const GoodsSlice = createSlice({
   name: 'goods',
   initialState,
   reducers: {
-    setGoodsType: (state, action) => {
-      const { rendered, title } = action.payload;
-      state.type.rendered = rendered;
-      state.type.title = title;
+    setGoodsTitle: (state, action) => {
+      const title = action.payload;
+
+      state.title = Object.values(GoodsType).find(type => type === title)
+        || GoodsType.DEFAULT;
     },
   },
   extraReducers: (builder) => {
@@ -52,6 +56,6 @@ const GoodsSlice = createSlice({
   },
 });
 
-export const { setGoodsType } = GoodsSlice.actions;
+export const { setGoodsTitle } = GoodsSlice.actions;
 
 export default GoodsSlice.reducer
