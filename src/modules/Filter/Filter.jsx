@@ -11,7 +11,7 @@ import { setFilters } from '@store/reducers/filtersSlice';
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
   const [openChoice, setOpenChoice] = useState(null);
-  const filters = useSelector(state => state.filters);
+  const filters = useSelector(state => state.filters.filters);
 
   const prevFilterRef = useRef(filters);
 
@@ -21,10 +21,6 @@ export const Filter = ({ titleClass, containerClass }) => {
     }, 400),
   ).current;
 
-  const handleChoicesToggle = (index) => {
-    setOpenChoice(openChoice === index ? null : index);
-  };
-
   useEffect(() => {
     const prevFilters = prevFilterRef.current;
     const validFilter = getValidFilters(filters);
@@ -33,7 +29,7 @@ export const Filter = ({ titleClass, containerClass }) => {
       setOpenChoice(null);
       dispatch(fetchGoods(validFilter));
     } else {
-      debouncedFetchGoods(filters);
+      debouncedFetchGoods(validFilter);
     }
 
     prevFilterRef.current = filters;
@@ -41,7 +37,7 @@ export const Filter = ({ titleClass, containerClass }) => {
 
   const handleTypeChange = ({ currentTarget }) => {
     if (currentTarget.value === filters.type) return;
-    dispatch(setFilters({ type: currentTarget.value }));
+    dispatch(setFilters({ type: currentTarget.value, minPrice: '', maxPrice: '' }));
     dispatch(setGoodsTitle(currentTarget.labels[0].innerText));
   };
 
@@ -49,10 +45,11 @@ export const Filter = ({ titleClass, containerClass }) => {
     if (currentTarget.value === filters.type) return;
     const { name, value } = currentTarget;
 
-    dispatch(setFilters({
-      ...filters,
-      [name]: !isNaN(parseInt(value)) ? value : '',
-    }));
+    dispatch(setFilters({ [name]: !isNaN(parseInt(value)) ? value : '' }));
+  };
+
+  const handleChoicesToggle = (index) => {
+    setOpenChoice(openChoice === index ? null : index);
   };
 
   return (
