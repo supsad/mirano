@@ -5,8 +5,21 @@ import { Filter } from '@modules/Filter/Filter.jsx';
 import { Goods } from '@modules/Goods/Goods.jsx';
 import { Subscribe } from '@modules/Subscribe/Subscribe.jsx';
 import { Order } from '@modules/Order/Order.jsx';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { registerCart } from '@store/reducers/cartSlice';
 
 export const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const initializeCart = async () => {
+      await dispatch(registerCart());
+    };
+
+    void initializeCart();
+  }, [dispatch]);
+
   return (
     <>
       <Header containerClass='container'
