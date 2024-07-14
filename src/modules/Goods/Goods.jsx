@@ -18,7 +18,7 @@ export const Goods = ({ containerClass, titleClass }) => {
   } = useSelector(state => state.goods);
 
   const goodsTitleRef = useRef(null);
-  
+
   useEffect(() => {
     const titleCoords = goodsTitleRef.current.getBoundingClientRect();
     dispatch(setGoodsTitleCoords(titleCoords.top));
@@ -31,16 +31,23 @@ export const Goods = ({ containerClass, titleClass }) => {
   } else if (goodsStatus === 'succeeded') {
     content = <ul className={ styles.list }>
       {
-        goods.map(item => (
-          <li key={ item.id }>
-            <Card id={ item.id }
-                  img={ `${ API_URL }${ item.photoUrl }` }
-                  title={ item.name }
-                  dateDelivery={ 'сегодня в 14:00' }
-                  price={ item.price }
-            />
-          </li>
-        ))
+        goods.length !== 0
+          ?
+          goods.map(item => (
+            <li key={ item.id }>
+              <Card id={ item.id }
+                    img={ `${ API_URL }${ item.photoUrl }` }
+                    title={ item.name }
+                    dateDelivery={ 'сегодня в 14:00' }
+                    price={ item.price }
+              />
+            </li>
+          ))
+          :
+          <p className={ styles['no-product'] } style={{lineHeight: '1.6em'}}>
+            Вашего запроса не существует!<br />
+            Попробуйте ввести другой!
+          </p>
       }
     </ul>
   }
@@ -53,7 +60,9 @@ export const Goods = ({ containerClass, titleClass }) => {
     <section className={ styles.goods }>
       <div className={ classNames(containerClass, styles.container) }>
         <div className={ styles.box } style={ { position: 'relative' } }>
-          <h2 className={ titleClass } ref={ goodsTitleRef }>{ goodsTitle.value }</h2>
+          <h2 className={ titleClass } ref={ goodsTitleRef }>
+            { goods.length !== 0 ? goodsTitle.value : 'Товары не найдены!' }
+          </h2>
 
           { content }
         </div>
