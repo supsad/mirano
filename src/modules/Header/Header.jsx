@@ -6,6 +6,8 @@ import isValueString from '@utils/isValueString';
 import { fetchGoods, setGoodsTitleValue } from '@store/reducers/goodsSlice';
 import { clearFilters, setSearch } from '@store/reducers/filtersSlice';
 import { useEffect, useRef } from 'react';
+import debounce from '@utils/debounce';
+import validFilters from '@utils/validFilters';
 
 export const Header = ({ containerClass, buttonClass }) => {
   const dispatch = useDispatch();
@@ -15,24 +17,40 @@ export const Header = ({ containerClass, buttonClass }) => {
 
   const inputRef = useRef(null);
   const prevSearchRef = useRef(search);
+  const debouncedFetchGoods = useRef(
+    debounce((search) => {
+      dispatch(fetchGoods(search));
+    }, 400),
+  ).current;
 
   useEffect(() => {
-    if (search.length === 0) return;
+    /* * Works on click or press Enter key
+     ? With real time input, the check does not work
+     ? but the browser still caches the request
+     ? so I see no reason to complicate the check
+     */
+    const prevSearch = prevSearchRef.current;
+    if (prevSearch === search) return;
 
-    const validSearch = isValueString(search) ? { search: search } : { list: search };
-    dispatch(fetchGoods(validSearch));
-  }, [dispatch, search]);
+    if (search.length === 0) setSearch('');
+
+    const whatSearch = isValueString(search) ? { search: search.toLowerCase() } : { list: search };
+    const validSearch = validFilters(whatSearch);
+    debouncedFetchGoods(validSearch);
+  }, [debouncedFetchGoods, dispatch, search]);
+
 
   const handlerCartToggle = () => dispatch(toggleCart());
 
-  const handleSearchPressing = (e) => {
-    e.preventDefault();
-
-    if (prevSearchRef === search) return;
-
+  const onSearch = (value) => {
     dispatch(clearFilters());
     dispatch(setGoodsTitleValue('Найденные товары'));
-    dispatch(setSearch(inputRef.current.value));
+    dispatch(setSearch(value));
+  };
+
+  const handleSearchPressing = (e) => {
+    e.preventDefault();
+    onSearch(inputRef.current.value);
     window.scrollTo({ top: coordYToScroll, behavior: 'smooth' });
   };
 
@@ -44,6 +62,7 @@ export const Header = ({ containerClass, buttonClass }) => {
                  type="search"
                  name="search"
                  placeholder="Букет из роз"
+                 onChange={ e => onSearch(e.currentTarget.value) }
                  ref={ inputRef }
           />
 
