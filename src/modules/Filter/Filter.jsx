@@ -32,9 +32,9 @@ export const Filter = ({ titleClass, containerClass }) => {
     const prevFilters = prevFilterRef.current;
     const validFilter = getValidFilters(filters);
 
-    if (Object.keys(validFilter).length === 0) return;
+    if (Object.keys(validFilter).length === 0 && !validFilter.type) return;
 
-    if (prevFilters.type !== filters.type) {
+    if (prevFilters.type !== validFilter.type) {
       dispatch(fetchGoods(validFilter));
     } else {
       debouncedFetchGoods(validFilter);
