@@ -14,7 +14,7 @@ export const Header = ({ containerClass, buttonClass }) => {
   const coordYToScroll = useSelector(state => state.goods.title.pageYCoord);
   const search = useSelector(state => state.filters.search);
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
   const [itemsCount, setItemsCount] = useState(0);
 
   const inputRef = useRef(null);
@@ -31,7 +31,7 @@ export const Header = ({ containerClass, buttonClass }) => {
 
     if (prevSearch === search) return;
     if (search.length === 0 || search === '') {
-      setIsDisabled(true);
+      setButtonIsDisabled(true);
       setSearch('');
       return;
     }
@@ -53,7 +53,7 @@ export const Header = ({ containerClass, buttonClass }) => {
   const handlerCartToggle = () => dispatch(toggleCart());
 
   const onSearch = (value, type) => {
-    value.length > 0 && setIsDisabled(false);
+    value.length > 0 && setButtonIsDisabled(false);
 
     if (type === 'input') {
       debouncedSetSearch(value);
@@ -61,6 +61,8 @@ export const Header = ({ containerClass, buttonClass }) => {
     }
 
     dispatch(setSearch(value));
+    inputRef.current.value = '';
+    setButtonIsDisabled(true);
   };
 
   const handleSearchPressing = (e) => {
@@ -83,10 +85,10 @@ export const Header = ({ containerClass, buttonClass }) => {
                  ref={ inputRef }
           />
 
-          <button className={ isDisabled ? classNames(buttonClass, styles['search-button']) : buttonClass }
+          <button className={ buttonIsDisabled ? classNames(buttonClass, styles['search-button']) : buttonClass }
                   aria-label="Начать поиск"
                   onClick={ handleSearchPressing }
-                  disabled={ isDisabled }
+                  disabled={ buttonIsDisabled }
           >
             <svg width="20"
                  height="20"
