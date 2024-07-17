@@ -3,6 +3,7 @@ import cartReducer from '@store/reducers/cartSlice.js';
 import orderReducer from '@store/reducers/orderSlice.js';
 import goodsReducer from '@store/reducers/goodsSlice.js';
 import filtersReducer from '@store/reducers/filtersSlice';
+import choicesReducer from '@store/reducers/choicesSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     order: orderReducer,
     goods: goodsReducer,
     filters: filtersReducer,
+    choices: choicesReducer,
   },
 });
 

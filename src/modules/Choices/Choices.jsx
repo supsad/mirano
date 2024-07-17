@@ -11,7 +11,7 @@ export const Choices = ({ buttonLabel, onToggle, isOpen, children, position }) =
 
     {
       isOpen &&
-      <ChoicesBox position={ position }>
+      <ChoicesBox isOpen={ isOpen } position={ position }>
         { children }
       </ChoicesBox>
     }
