@@ -1,15 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { API_URL } from '@/constants.js';
+import fetchData from '@/fetchData';
 
 export const fetchGoods = createAsyncThunk(
   'goods/fetchGoods',
-  async (params) => {
+  (params) => {
     const queryString = new URLSearchParams(params).toString();
-    const response = await fetch(
-      `${ API_URL }/api/products${ queryString ? `?${ queryString }` : '' }`
+    return fetchData(
+      `/api/products${queryString && '?' + queryString}`,
+      { method: 'GET' },
+      'Не удалось получить список товаров'
     );
-
-    return await response.json();
   },
 );
 
