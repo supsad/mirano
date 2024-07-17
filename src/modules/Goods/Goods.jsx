@@ -45,7 +45,7 @@ export const Goods = ({ containerClass, titleClass }) => {
           ))
           :
           <p className={ styles['no-product'] } style={{lineHeight: '1.6em'}}>
-            Вашего запроса не существует!<br />
+            По вашему запросу ничего не найдено!<br />
             Попробуйте ввести другой!
           </p>
       }
