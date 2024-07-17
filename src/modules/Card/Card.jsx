@@ -29,7 +29,7 @@ export const Card = ({ id, img, title, dateDelivery, price }) => {
                   onClick={ handlerAddToCart }
                   { ...hoverButtonProps }
           >
-            { isButtonHovered ? 'В корзину' : `${price}\u00A0₽` }
+            { isButtonHovered ? 'В корзину' : `${ price }\u00A0₽` }
           </button>
         </div>
       </div>

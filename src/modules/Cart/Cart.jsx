@@ -3,11 +3,14 @@ import { CartItem } from '@modules/CartItem/CartItem.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleCart } from '@store/reducers/cartSlice.js';
 import { openOrder } from '@store/reducers/orderSlice.js';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { API_URL } from '@/constants';
 
 export const Cart = () => {
   const dispatch = useDispatch();
   const { isOpen, items } = useSelector(state => state.cart);
+  
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const cartRef = useRef(null);
 
@@ -17,7 +20,8 @@ export const Cart = () => {
   useEffect(() => {
     if (!isOpen) return;
     cartRef.current.scrollIntoView({ behavior: 'smooth' });
-  }, [isOpen]);
+    setTotalPrice(items.reduce((total, item) => total + item.price, 0));
+  }, [isOpen, items]);
 
   if (!isOpen) return null;
 
@@ -44,7 +48,11 @@ export const Cart = () => {
         <ul className={ styles.list }>
           {
             items.map(item => (
-              <CartItem key={ item.id } { ...item } />
+              <CartItem key={ item.id }
+                        img={ `${ API_URL }${ item.photoUrl }` }
+                        title={ item.name }
+                        price={ item.price }
+              />
             ))
           }
         </ul>
@@ -54,7 +62,7 @@ export const Cart = () => {
                   onClick={ handlerOrderOpen }>
             Оформить
           </button>
-          <p className={ styles.price }>0&nbsp;₽</p>
+          <p className={ styles.price }>{ totalPrice }&nbsp;₽</p>
         </div>
       </div>
     </section>
