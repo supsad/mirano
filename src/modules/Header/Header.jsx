@@ -7,7 +7,6 @@ import { fetchGoods, setGoodsTitleValue } from '@store/reducers/goodsSlice';
 import { clearFilters, setSearch } from '@store/reducers/filtersSlice';
 import { useEffect, useRef } from 'react';
 import debounce from '@utils/debounce';
-import validFilters from '@utils/validFilters';
 
 export const Header = ({ containerClass, buttonClass }) => {
   const dispatch = useDispatch();
@@ -17,34 +16,37 @@ export const Header = ({ containerClass, buttonClass }) => {
 
   const inputRef = useRef(null);
   const prevSearchRef = useRef(search);
-  const debouncedFetchGoods = useRef(
-    debounce((search) => {
-      dispatch(fetchGoods(search));
-    }, 400),
+
+  const debouncedSetSearch = useRef(
+    debounce((value) => {
+      dispatch(setSearch(value));
+    }, 350),
   ).current;
 
   useEffect(() => {
-    /* * Works on click or press Enter key
-     ? With real time input, the check does not work
-     ? but the browser still caches the request
-     ? so I see no reason to complicate the check
-     */
     const prevSearch = prevSearchRef.current;
+
     if (prevSearch === search) return;
+    if (search.length === 0 || search === '') setSearch('');
 
-    if (search.length === 0) setSearch('');
+    dispatch(clearFilters());
+    dispatch(setGoodsTitleValue('Найденные товары'));
+    dispatch(fetchGoods((
+      isValueString(search) ? { search: search.toLowerCase() } : { list: search }
+    )));
 
-    const whatSearch = isValueString(search) ? { search: search.toLowerCase() } : { list: search };
-    const validSearch = validFilters(whatSearch);
-    debouncedFetchGoods(validSearch);
-  }, [debouncedFetchGoods, dispatch, search]);
+    prevSearchRef.current = search;
+  }, [dispatch, search]);
 
 
   const handlerCartToggle = () => dispatch(toggleCart());
 
-  const onSearch = (value) => {
-    dispatch(clearFilters());
-    dispatch(setGoodsTitleValue('Найденные товары'));
+  const onSearch = (value, type) => {
+    if (type === 'input') {
+      debouncedSetSearch(value);
+      return;
+    }
+
     dispatch(setSearch(value));
   };
 
@@ -62,7 +64,9 @@ export const Header = ({ containerClass, buttonClass }) => {
                  type="search"
                  name="search"
                  placeholder="Букет из роз"
-                 onChange={ e => onSearch(e.currentTarget.value) }
+                 onChange={ e =>
+                   onSearch(e.currentTarget.value, 'input')
+                 }
                  ref={ inputRef }
           />
 

@@ -15,7 +15,6 @@ export const Filter = ({ titleClass, containerClass }) => {
   const filters = useSelector(state => state.filters.filters);
 
   const prevFilterRef = useRef(filters);
-
   const debouncedFetchGoods = useRef(
     debounce((filters) => {
       dispatch(fetchGoods(filters));
