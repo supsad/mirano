@@ -111,3 +111,9 @@
     grid-area: cart;
   }
 }
+
+.search-button {
+  &:disabled {
+    background-color: darken($orange, 5%);
+  }
+}

@@ -5,7 +5,7 @@ import { toggleCart } from '@store/reducers/cartSlice.js';
 import isValueString from '@utils/isValueString';
 import { fetchGoods, setGoodsTitleValue } from '@store/reducers/goodsSlice';
 import { clearFilters, setSearch } from '@store/reducers/filtersSlice';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import debounce from '@utils/debounce';
 
 export const Header = ({ containerClass, buttonClass }) => {
@@ -13,6 +13,8 @@ export const Header = ({ containerClass, buttonClass }) => {
   const cartCount = useSelector(state => state.cart.count);
   const coordYToScroll = useSelector(state => state.goods.title.pageYCoord);
   const search = useSelector(state => state.filters.search);
+
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const inputRef = useRef(null);
   const prevSearchRef = useRef(search);
@@ -27,7 +29,11 @@ export const Header = ({ containerClass, buttonClass }) => {
     const prevSearch = prevSearchRef.current;
 
     if (prevSearch === search) return;
-    if (search.length === 0 || search === '') setSearch('');
+    if (search.length === 0 || search === '') {
+      setIsDisabled(true);
+      setSearch('');
+      return;
+    }
 
     dispatch(clearFilters());
     dispatch(setGoodsTitleValue('Найденные товары'));
@@ -42,6 +48,8 @@ export const Header = ({ containerClass, buttonClass }) => {
   const handlerCartToggle = () => dispatch(toggleCart());
 
   const onSearch = (value, type) => {
+    value.length > 0 && setIsDisabled(false);
+
     if (type === 'input') {
       debouncedSetSearch(value);
       return;
@@ -70,9 +78,10 @@ export const Header = ({ containerClass, buttonClass }) => {
                  ref={ inputRef }
           />
 
-          <button className={ buttonClass }
+          <button className={ isDisabled ? classNames(buttonClass, styles['search-button']) : buttonClass }
                   aria-label="Начать поиск"
                   onClick={ handleSearchPressing }
+                  disabled={ isDisabled }
           >
             <svg width="20"
                  height="20"
