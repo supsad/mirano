@@ -1,22 +1,43 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { API_URL } from '@/constants';
+import fetchData from '@/fetchData';
 
 export const registerCart = createAsyncThunk(
   'cart/registerCart',
-  async () => {
-    const response = fetch(`${ API_URL }/api/cart/register`, {
+  () => fetchData(
+    '/api/cart/register',
+    { method: 'POST', credentials: 'include' },
+    'Не удалось зарегистрировать корзину',
+  ),
+);
+
+export const fetchCart = createAsyncThunk(
+  'cart/fetchCart',
+  () => fetchData(
+    '/api/cart',
+    { method: 'GET', credentials: 'include' },
+    'Не удалось получить данные корзины',
+  ),
+);
+
+export const addItemToCart = createAsyncThunk(
+  'cart/addItemToCart',
+  ({ productId, quantity }) => fetchData(
+    '/api/cart/items',
+    {
       method: 'POST',
       credentials: 'include',
-    });
-
-    return await response.json();
-  },
-);
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ productId, quantity })
+    },
+    'Не удалось отправить товар в корзину'
+  ),
+)
 
 const initialState = {
   isOpen: false,
-  items: JSON.parse(localStorage.getItem('cartItems') || '[]'),
-  count: JSON.parse(localStorage.getItem('cartItemsCount') || '0'),
+  items: [],
   status: 'idle',
   accessKey: null,
   error: null,
@@ -29,59 +50,47 @@ const cartSlice = createSlice({
     toggleCart: (state) => {
       state.isOpen = !state.isOpen;
     },
-
-    addItemToCart: (state, action) => {
-      const {
-        id,
-        count = 1,
-        ...params
-      } = action.payload;
-
-      const existingItems = state.items.find(item => item.id === id);
-
-      existingItems
-        ? existingItems.count = count
-        : state.items.push({
-          id,
-          count,
-          ...params,
-        });
-
-      localStorage.setItem('cartItems', JSON.stringify(state.items));
-    },
-
-    setItemsCountToCart: (state) => {
-      const items = state.items;
-
-      state.count = items.reduce((acc, item) => {
-        return acc + item.count;
-      }, 0);
-
-      localStorage.setItem('cartItemsCount', state.count);
-    },
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase('registerCart/pending', (state) => {
+      .addCase(registerCart.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase('registerCart/fulfilled', (state, action) => {
+      .addCase(registerCart.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.accessKey = action.payload.accessKey;
       })
-      .addCase('registerCart/rejected', (state, action) => {
+      .addCase(registerCart.rejected, (state, action) => {
         state.status = 'failed';
         state.accessKey = '';
+        state.error = action.error.message;
+      })
+      .addCase(fetchCart.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchCart.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload;
+      })
+      .addCase(fetchCart.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(addItemToCart.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(addItemToCart.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.items = action.payload;
+      })
+      .addCase(addItemToCart.rejected, (state, action) => {
+        state.status = 'failed';
         state.error = action.error.message;
       })
   }
 });
 
-export const {
-  toggleCart,
-  addItemToCart,
-  setItemsCountToCart,
-} = cartSlice.actions;
+export const { toggleCart} = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,6 +1,6 @@
 import styles from './Card.module.scss';
 import { useDispatch } from 'react-redux';
-import { addItemToCart, setItemsCountToCart } from '@store/reducers/cartSlice.js';
+import { addItemToCart } from '@store/reducers/cartSlice.js';
 import useHover from '@hooks/useHover.js';
 
 export const Card = ({ id, img, title, dateDelivery, price }) => {
@@ -11,8 +11,7 @@ export const Card = ({ id, img, title, dateDelivery, price }) => {
   ] = useHover();
 
   const handlerAddToCart = () => {
-    dispatch(addItemToCart({ id, img, title, dateDelivery, price }));
-    dispatch(setItemsCountToCart());
+    dispatch(addItemToCart({ productId: id, quantity: 1 }));
   };
 
   return (
