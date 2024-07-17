@@ -8,6 +8,13 @@ import getValidFilters from '@utils/validFilters';
 import debounce from '@utils/debounce';
 import { clearFilters, setFilters } from '@store/reducers/filtersSlice';
 import isValueString from '@utils/isValueString';
+import { FilterRadio } from '@modules/Filter/FilterRadio';
+
+const FilterTypes = [
+  { value: 'bouquets', title: 'Цветы' },
+  { value: 'toys', title: 'Игрушки' },
+  { value: 'postcards', title: 'Открытки' },
+];
 
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
@@ -28,7 +35,6 @@ export const Filter = ({ titleClass, containerClass }) => {
     if (Object.keys(validFilter).length === 0) return;
 
     if (prevFilters.type !== filters.type) {
-      setOpenChoice(null);
       dispatch(fetchGoods(validFilter));
     } else {
       debouncedFetchGoods(validFilter);
@@ -42,6 +48,7 @@ export const Filter = ({ titleClass, containerClass }) => {
     dispatch(clearFilters());
     dispatch(setFilters({ type: currentTarget.value }));
     dispatch(setGoodsTitleValue(currentTarget.labels[0].innerText));
+    setOpenChoice(-1);
   };
 
   const handlePriceChange = ({ currentTarget }) => {
@@ -61,47 +68,17 @@ export const Filter = ({ titleClass, containerClass }) => {
       <div className={ containerClass }>
         <form className={ styles.form }>
           <fieldset className={ styles.group }>
-            <input className={ styles.radio }
-                   type="radio"
-                   name="type"
-                   value="bouquets"
-                   id="flower"
-                   checked={ 'bouquets' === filters.type }
-                   onClick={ handleTypeChange }
-            />
-            <label className={ classNames(styles.label, styles.label_flower) }
-                   htmlFor="flower"
-            >
-              Цветы
-            </label>
-
-            <input className={ styles.radio }
-                   type="radio"
-                   name="type"
-                   value="toys"
-                   id="toys"
-                   checked={ 'toys' === filters.type }
-                   onClick={ handleTypeChange }
-            />
-            <label className={ classNames(styles.label, styles.label_toys) }
-                   htmlFor="toys"
-            >
-              Игрушки
-            </label>
-
-            <input className={ styles.radio }
-                   type="radio"
-                   name="type"
-                   value="postcards"
-                   id="postcard"
-                   checked={ 'postcards' === filters.type }
-                   onClick={ handleTypeChange }
-            />
-            <label className={ classNames(styles.label, styles.label_postcard) }
-                   htmlFor="postcard"
-            >
-              Открытки
-            </label>
+            {
+              FilterTypes.map(item => {
+                return (
+                  <FilterRadio key={ item.value }
+                               handleTypeChange={ handleTypeChange }
+                               data={ item }
+                               type={ filters.type }
+                  />
+                )
+              })
+            }
           </fieldset>
 
           <fieldset className={ classNames(styles.group, styles.group_choices) }>
