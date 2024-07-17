@@ -2,6 +2,7 @@ import styles from './Order.module.scss';
 import { OrderForm } from '@modules/OrderForm/OrderForm.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeOrder } from '@store/reducers/orderSlice.js';
+import { useCallback, useEffect } from 'react';
 
 const Titles = {
   FORM: 'Оформить заказ',
@@ -13,9 +14,19 @@ export const Order = () => {
   const isTakeOrderSuccess = false;
   const dispatch = useDispatch();
 
-  const onOrderClose = () => {
+  const onOrderClose = useCallback(() => {
     dispatch(closeOrder());
-  }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePressEsc = ({ key }) => key === 'Escape' && onOrderClose();
+
+    document.addEventListener('keydown', handlePressEsc);
+
+    return () => document.removeEventListener('keydown', handlePressEsc);
+  }, [isOpen, onOrderClose]);
 
   if (!isOpen) return null;
 
