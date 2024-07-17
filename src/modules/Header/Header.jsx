@@ -10,11 +10,12 @@ import debounce from '@utils/debounce';
 
 export const Header = ({ containerClass, buttonClass }) => {
   const dispatch = useDispatch();
-  const cartCount = useSelector(state => state.cart.count);
+  const items = useSelector(state => state.cart.items);
   const coordYToScroll = useSelector(state => state.goods.title.pageYCoord);
   const search = useSelector(state => state.filters.search);
 
   const [isDisabled, setIsDisabled] = useState(true);
+  const [itemsCount, setItemsCount] = useState(0);
 
   const inputRef = useRef(null);
   const prevSearchRef = useRef(search);
@@ -43,6 +44,10 @@ export const Header = ({ containerClass, buttonClass }) => {
 
     prevSearchRef.current = search;
   }, [dispatch, search]);
+
+  useEffect(() => {
+    setItemsCount(items.reduce((acc, item) => acc + item.quantity, 0));
+  }, [items]);
 
 
   const handlerCartToggle = () => dispatch(toggleCart());
@@ -100,7 +105,7 @@ export const Header = ({ containerClass, buttonClass }) => {
 
         <button className={ styles['cart-button'] }
                 onClick={ handlerCartToggle }>
-          { cartCount }
+          { itemsCount }
         </button>
       </div>
     </header>
