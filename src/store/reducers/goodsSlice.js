@@ -3,12 +3,12 @@ import fetchData from '@/fetchData';
 
 export const fetchGoods = createAsyncThunk(
   'goods/fetchGoods',
-  (params, thunkAPI) => {
+  async (params, thunkAPI) => {
     const errMessage = 'Не удалось получить список товаров';
 
     try {
       const queryString = new URLSearchParams(params).toString();
-      return fetchData(
+      return await fetchData(
         `/api/products${queryString && '?' + queryString}`,
         { method: 'GET' },
         errMessage,

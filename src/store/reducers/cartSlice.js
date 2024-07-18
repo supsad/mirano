@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import fetchData from '@/fetchData';
+import { API_URL } from '@/constants';
 
 export const registerCart = createAsyncThunk(
   'cart/registerCart',
-  (_, thunkAPI) => {
+  async (_, thunkAPI) => {
     const errMessage = 'Не удалось зарегистрировать корзину';
 
     try {
-      return fetchData(
+      return await fetchData(
         '/api/cart/register',
         { method: 'POST', credentials: 'include' },
         errMessage,
@@ -20,11 +21,11 @@ export const registerCart = createAsyncThunk(
 
 export const fetchCart = createAsyncThunk(
   'cart/fetchCart',
-  (_, thunkAPI) => {
+  async (_, thunkAPI) => {
     const errMessage = 'Не удалось получить данные корзины';
 
     try {
-      return fetchData(
+      return await fetchData(
         '/api/cart',
         { method: 'GET', credentials: 'include' },
         'Не удалось получить данные корзины',
@@ -37,22 +38,33 @@ export const fetchCart = createAsyncThunk(
 
 export const addItemToCart = createAsyncThunk(
   'cart/addItemToCart',
-  ({ productId, quantity }, thunkAPI) => {
+  async ({ productId, quantity }, thunkAPI) => {
     const errMessage = 'Не удалось отправить товар в корзину';
 
     try {
-      return fetchData(
-        '/api/cart/items',
-        {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ productId, quantity })
+      const response = await fetch(`${API_URL}/api/cart/items`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
         },
-        errMessage,
-      );
+        body: JSON.stringify({ productId, quantity })
+      });
+
+      return await response.json();
+
+      // return await fetchData(
+      //   '/api/cart/items',
+      //   {
+      //     method: 'POST',
+      //     credentials: 'include',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({ productId, quantity })
+      //   },
+      //   errMessage,
+      // );
     } catch (err) {
       return thunkAPI.rejectWithValue(`${err.response.status} - ${err.response.statusText}`, errMessage);
     }
