@@ -37,7 +37,7 @@ export const Header = ({ containerClass, buttonClass }) => {
     }
 
     dispatch(clearFilters());
-    dispatch(setGoodsTitleValue('Найденные товары'));
+    dispatch(setGoodsTitleValue(`Товары по запросу: ${search}`));
     dispatch(fetchGoods((
       isValueString(search) ? { search: search.toLowerCase() } : { list: search }
     )));
