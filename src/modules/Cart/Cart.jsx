@@ -9,7 +9,7 @@ import { API_URL } from '@/constants';
 export const Cart = () => {
   const dispatch = useDispatch();
   const { isOpen, items } = useSelector(state => state.cart);
-  
+
   const [totalPrice, setTotalPrice] = useState(0);
 
   const cartRef = useRef(null);
@@ -52,6 +52,7 @@ export const Cart = () => {
                         img={ `${ API_URL }${ item.photoUrl }` }
                         title={ item.name }
                         price={ item.price }
+                        count={ item.quantity }
               />
             ))
           }
