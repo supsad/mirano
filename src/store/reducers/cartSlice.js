@@ -3,36 +3,60 @@ import fetchData from '@/fetchData';
 
 export const registerCart = createAsyncThunk(
   'cart/registerCart',
-  () => fetchData(
-    '/api/cart/register',
-    { method: 'POST', credentials: 'include' },
-    'Не удалось зарегистрировать корзину',
-  ),
+  (_, thunkAPI) => {
+    const errMessage = 'Не удалось зарегистрировать корзину';
+
+    try {
+      return fetchData(
+        '/api/cart/register',
+        { method: 'POST', credentials: 'include' },
+        errMessage,
+      );
+    } catch (err) {
+      return thunkAPI.rejectWithValue(`${err.response.status} - ${err.response.statusText}`, errMessage);
+    }
+  },
 );
 
 export const fetchCart = createAsyncThunk(
   'cart/fetchCart',
-  () => fetchData(
-    '/api/cart',
-    { method: 'GET', credentials: 'include' },
-    'Не удалось получить данные корзины',
-  ),
+  (_, thunkAPI) => {
+    const errMessage = 'Не удалось получить данные корзины';
+
+    try {
+      return fetchData(
+        '/api/cart',
+        { method: 'GET', credentials: 'include' },
+        'Не удалось получить данные корзины',
+      );
+    } catch (err) {
+      return thunkAPI.rejectWithValue(`${err.response.status} - ${err.response.statusText}`, errMessage);
+    }
+  },
 );
 
 export const addItemToCart = createAsyncThunk(
   'cart/addItemToCart',
-  ({ productId, quantity }) => fetchData(
-    '/api/cart/items',
-    {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ productId, quantity })
-    },
-    'Не удалось отправить товар в корзину'
-  ),
+  ({ productId, quantity }, thunkAPI) => {
+    const errMessage = 'Не удалось отправить товар в корзину';
+
+    try {
+      return fetchData(
+        '/api/cart/items',
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId, quantity })
+        },
+        errMessage,
+      );
+    } catch (err) {
+      return thunkAPI.rejectWithValue(`${err.response.status} - ${err.response.statusText}`, errMessage);
+    }
+  },
 )
 
 const initialState = {

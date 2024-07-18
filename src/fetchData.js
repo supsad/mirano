@@ -9,9 +9,9 @@ const isResponseStatusFailed = ({ ok, status, statusText }, errMessage) => {
   }
 };
 
-export default async function fetchData(endpoint, params, errMessage) {
+export default async function fetchData(endpoint, APIParams, errMessage) {
   try {
-    const response = await fetch(`${ API_URL }${ endpoint }`, params);
+    const response = await fetch(`${ API_URL }${ endpoint }`, APIParams);
 
     isResponseStatusFailed(response, errMessage);
 

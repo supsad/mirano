@@ -3,13 +3,19 @@ import fetchData from '@/fetchData';
 
 export const fetchGoods = createAsyncThunk(
   'goods/fetchGoods',
-  (params) => {
-    const queryString = new URLSearchParams(params).toString();
-    return fetchData(
-      `/api/products${queryString && '?' + queryString}`,
-      { method: 'GET' },
-      'Не удалось получить список товаров'
-    );
+  (params, thunkAPI) => {
+    const errMessage = 'Не удалось получить список товаров';
+
+    try {
+      const queryString = new URLSearchParams(params).toString();
+      return fetchData(
+        `/api/products${queryString && '?' + queryString}`,
+        { method: 'GET' },
+        errMessage,
+      );
+    } catch (err) {
+      return thunkAPI.rejectWithValue(`${err.response.status} - ${err.response.statusText}`, errMessage);
+    }
   },
 );
 
