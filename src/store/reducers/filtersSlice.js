@@ -1,14 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  filters: {
-    type: 'bouquets',
-    minPrice: '',
-    maxPrice: '',
-    category: '',
-  },
-
-  search: '',
+  type: 'bouquets',
+  minPrice: '',
+  maxPrice: '',
+  category: '',
 };
 
 const filtersSlice = createSlice({
@@ -19,29 +15,20 @@ const filtersSlice = createSlice({
       for (const key in action.payload) {
         if (!Object.hasOwnProperty.call(action.payload, key)) continue;
 
-        state.filters[key] = action.payload[key];
+        state[key] = action.payload[key];
       }
     },
 
     clearFilters: (state) => {
-      const filtersClone = { ...state.filters };
-
-      for (const key in filtersClone) {
-        filtersClone[key] = '';
+      for (const key in state) {
+        state[key] = '';
       }
-
-      state.filters = filtersClone;
-    },
-
-    setSearch: (state, action) => {
-        state.search = action.payload;
     },
   },
 });
 
 export const {
   setFilters,
-  setSearch,
   clearFilters,
 } = filtersSlice.actions;
 

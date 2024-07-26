@@ -9,6 +9,7 @@ import debounce from '@utils/debounce';
 import { clearFilters, setFilters } from '@store/reducers/filtersSlice';
 import isValueString from '@utils/isValueString';
 import { FilterRadio } from '@modules/Filter/FilterRadio';
+import { setSearch } from '@store/reducers/searchSlice';
 
 const FilterTypes = [
   { value: 'bouquets', title: 'Цветы' },
@@ -19,7 +20,8 @@ const FilterTypes = [
 export const Filter = ({ titleClass, containerClass }) => {
   const dispatch = useDispatch();
   const [openChoice, setOpenChoice] = useState(null);
-  const filters = useSelector(state => state.filters.filters);
+  const filters = useSelector(state => state.filters);
+  const search = useSelector(state => state.search.query);
 
   const prevFilterRef = useRef(filters);
   const debouncedFetchGoods = useRef(
@@ -30,22 +32,30 @@ export const Filter = ({ titleClass, containerClass }) => {
 
   useEffect(() => {
     const prevFilters = prevFilterRef.current;
-    const validFilter = getValidFilters(filters);
 
-    if (Object.keys(validFilter).length === 0 && !validFilter.type) return;
+    let validQuery = getValidFilters(Object.assign({ search }, filters));
 
-    if (prevFilters.type !== validFilter.type) {
-      dispatch(fetchGoods(validFilter));
+    if (
+      Object.keys(validQuery).length === 0
+      && (!validQuery.type || !validQuery.search)
+      && (validQuery.search && validQuery.type)
+    ) {
+      return;
+    }
+
+    if (prevFilters.type !== validQuery.type && !validQuery.search) {
+      dispatch(fetchGoods(validQuery));
     } else {
-      debouncedFetchGoods(validFilter);
+      debouncedFetchGoods(validQuery);
     }
 
     prevFilterRef.current = filters;
-  }, [debouncedFetchGoods, dispatch, filters]);
+  }, [debouncedFetchGoods, dispatch, filters, search]);
 
   const handleTypeChange = ({ currentTarget }) => {
     if (currentTarget.value === filters.type) return;
     dispatch(clearFilters());
+    dispatch(setSearch(''));
     dispatch(setFilters({ type: currentTarget.value }));
     dispatch(setGoodsTitleValue(currentTarget.labels[0].innerText));
     setOpenChoice(-1);

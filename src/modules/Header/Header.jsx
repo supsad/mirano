@@ -4,15 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleCart } from '@store/reducers/cartSlice.js';
 import isValueString from '@utils/isValueString';
 import { fetchGoods, setGoodsTitleValue } from '@store/reducers/goodsSlice';
-import { clearFilters, setSearch } from '@store/reducers/filtersSlice';
+import { clearFilters } from '@store/reducers/filtersSlice';
 import { useEffect, useRef, useState } from 'react';
 import debounce from '@utils/debounce';
+import { setSearch } from '@store/reducers/searchSlice';
 
 export const Header = ({ containerClass, buttonClass }) => {
   const dispatch = useDispatch();
   const items = useSelector(state => state.cart.items);
   const coordYToScroll = useSelector(state => state.goods.title.pageYCoord);
-  const search = useSelector(state => state.filters.search);
+  const search = useSelector(state => state.search.query);
 
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
   const [itemsCount, setItemsCount] = useState(0);
@@ -37,10 +38,8 @@ export const Header = ({ containerClass, buttonClass }) => {
     }
 
     dispatch(clearFilters());
-    dispatch(setGoodsTitleValue(`Товары по запросу: ${search}`));
-    dispatch(fetchGoods((
-      isValueString(search) ? { search: search.toLowerCase() } : { list: search }
-    )));
+    dispatch(setGoodsTitleValue(`Товары по запросу: ${ search }`));
+    dispatch(fetchGoods(isValueString(search) ? { search: search.toLowerCase() } : { list: search }));
 
     prevSearchRef.current = search;
   }, [dispatch, search]);

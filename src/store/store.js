@@ -4,6 +4,7 @@ import orderReducer from '@store/reducers/orderSlice.js';
 import goodsReducer from '@store/reducers/goodsSlice.js';
 import filtersReducer from '@store/reducers/filtersSlice';
 import choicesReducer from '@store/reducers/choicesSlice';
+import searchReducer from '@store/reducers/searchSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     order: orderReducer,
     goods: goodsReducer,
     filters: filtersReducer,
+    search: searchReducer,
     choices: choicesReducer,
   },
 });
