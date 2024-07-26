@@ -31,7 +31,7 @@ export const Goods = ({ containerClass, titleClass }) => {
     titleValue = 'Загрузка...';
     content = <Loader />;
   } else if (goodsStatus === 'succeeded') {
-    if (goods.length === 0) {
+    if (goods === undefined || goods.length === 0) {
       titleValue = 'Товары не найдены!';
       content = <p className={ styles['no-product'] } style={ { lineHeight: '1.6em' } }>
         По вашему запросу ничего не найдено!<br />
