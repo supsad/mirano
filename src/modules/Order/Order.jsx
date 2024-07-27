@@ -10,9 +10,10 @@ const Titles = {
 };
 
 export const Order = () => {
-  const isOpen = useSelector(state => state.order.isOpen);
-  const isTakeOrderSuccess = false;
   const dispatch = useDispatch();
+  const { isOpen, orderId } = useSelector(state => state.order);
+
+  const isTakeOrderSuccess = false;
 
   const onOrderClose = useCallback(() => {
     dispatch(closeOrder());
@@ -41,7 +42,7 @@ export const Order = () => {
           isTakeOrderSuccess ? (
             <>
               <h2 className={ styles.title }>{ Titles.NOTIFICATION }</h2>
-              <p>Ваш номер заказа: 971f365a-caa1-4cdb-9446-bad2eff047e1</p>
+              <p>Ваш номер заказа: { orderId }</p>
             </>
           ) : (
             <>
