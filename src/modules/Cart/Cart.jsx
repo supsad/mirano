@@ -19,7 +19,7 @@ export const Cart = () => {
   useEffect(() => {
     if (!isOpen) return;
     cartRef.current.scrollIntoView({ behavior: 'smooth' });
-    setTotalPrice(items.reduce((total, item) => total + item.price, 0));
+    setTotalPrice(items.reduce((total, item) => total + item.price * item.quantity, 0));
   }, [isOpen, items]);
 
   if (!isOpen) return null;
@@ -54,7 +54,9 @@ export const Cart = () => {
 
         <div className={ styles.footer }>
           <button className={ styles['order-btn'] }
-                  onClick={ handlerOrderOpen }>
+                  onClick={ handlerOrderOpen }
+                  disabled={ !items.length }
+          >
             Оформить
           </button>
           <p className={ styles.price }>{ totalPrice }&nbsp;₽</p>
