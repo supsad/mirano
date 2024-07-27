@@ -1,8 +1,9 @@
 import styles from './OrderForm.module.scss';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateOrderData } from '@store/reducers/orderSlice';
+import { sendOrder, updateOrderData } from '@store/reducers/orderSlice';
 import { useEffect, useState } from 'react';
+import getUserLocalDate, { getValidDateStringRU } from '@utils/calculateDeliveryDate';
 
 export const OrderForm = ({ className }) => {
   const dispatch = useDispatch();
@@ -10,8 +11,10 @@ export const OrderForm = ({ className }) => {
   const itemsCart = useSelector(state => state.cart.items);
 
   const [totalPrice, setTotalPrice] = useState(0);
+  const [date, setDate] = useState(getUserLocalDate());
 
   useEffect(() => {
+    setDate(getUserLocalDate());
     setTotalPrice(itemsCart.reduce((total, item) => total + item.price * item.quantity, 0));
   }, [itemsCart]);
 
@@ -20,15 +23,22 @@ export const OrderForm = ({ className }) => {
     dispatch(updateOrderData({ [name]: value }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(sendOrder());
+  };
+
   return (
     <>
       <form className={ classNames(className, styles['order-form']) }
             id="order-form"
+            onSubmit={ handleSubmit }
       >
         <fieldset className={ styles.fieldset }>
           <legend className={ styles.legend }>Данные заказчика</legend>
           <div className={ styles['input-group'] }>
             <input className={ styles.input }
+                   required
                    type="text"
                    name="buyerName"
                    placeholder="Имя"
@@ -36,6 +46,7 @@ export const OrderForm = ({ className }) => {
                    onChange={ handleChange }
             />
             <input className={ styles.input }
+                   required
                    type="text"
                    name="buyerPhone"
                    placeholder="Телефон"
@@ -48,6 +59,7 @@ export const OrderForm = ({ className }) => {
           <legend className={ styles.legend }>Данные получателя</legend>
           <div className={ styles['input-group'] }>
             <input className={ styles.input }
+                   required
                    type="text"
                    name="recipientName"
                    placeholder="Имя"
@@ -55,6 +67,7 @@ export const OrderForm = ({ className }) => {
                    onChange={ handleChange }
             />
             <input className={ styles.input }
+                   required
                    type="text"
                    name="recipientPhone"
                    placeholder="Телефон"
@@ -67,6 +80,7 @@ export const OrderForm = ({ className }) => {
           <legend className={ styles.legend }>Адрес</legend>
           <div className={ styles['input-group'] }>
             <input className={ styles.input }
+                   required
                    type="text"
                    name="street"
                    placeholder="Улица"
@@ -74,6 +88,7 @@ export const OrderForm = ({ className }) => {
                    onChange={ handleChange }
             />
             <input className={ classNames(styles.input, styles.input_min) }
+                   required
                    type="text"
                    name="house"
                    placeholder="Дом"
@@ -81,6 +96,7 @@ export const OrderForm = ({ className }) => {
                    onChange={ handleChange }
             />
             <input className={ classNames(styles.input, styles.input_min) }
+                   required
                    type="text"
                    name="apartment"
                    placeholder="Квартира"
@@ -95,7 +111,7 @@ export const OrderForm = ({ className }) => {
               <input className={ styles.radio }
                      type="radio"
                      name="paymentOnline"
-                     value={ orderData.paymentOnline === 'true' }
+                     value={ !!orderData.paymentOnline }
                      onChange={ handleChange }
                      defaultChecked
               />
@@ -103,7 +119,9 @@ export const OrderForm = ({ className }) => {
             </label>
           </div>
           <div className={ styles.delivery }>
-            <label htmlFor="delivery">Доставка 01.07</label>
+            <label htmlFor="delivery">
+              Доставка { getValidDateStringRU(date[2], date[1]) }
+            </label>
             <input type="hidden"
                    name="deliveryDate"
                    value={ orderData.deliveryDate }
@@ -116,7 +134,9 @@ export const OrderForm = ({ className }) => {
                       value={ orderData.deliveryTime }
                       onChange={ handleChange }
               >
-                <option value="9-12">с 9:00 до 12:00</option>
+                <option value="9-12" defaultChecked>
+                  с 9:00 до 12:00
+                </option>
                 <option value="12-15">с 12:00 до 15:00</option>
                 <option value="15-18">с 15:00 до 18:00</option>
                 <option value="18-21">с 18:00 до 21:00</option>
