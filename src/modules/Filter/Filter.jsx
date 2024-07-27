@@ -132,7 +132,12 @@ export const Filter = ({ titleClass, containerClass }) => {
                 >
                   <ul>
                     <li className={ styles['type-item'] }>
-                      <button className={ styles['type-button'] }
+                      <button className={
+                        classNames(
+                          styles['type-button'],
+                          filters.category === '' && styles['type-button_active'],
+                        )
+                      }
                               type="button"
                               onClick={ () => handleCategoryChange('') }
                       >
@@ -142,7 +147,12 @@ export const Filter = ({ titleClass, containerClass }) => {
                     {
                       categories.map(category =>
                         <li key={ category } className={ styles['type-item'] }>
-                          <button className={ styles['type-button'] }
+                          <button className={
+                            classNames(
+                              styles['type-button'],
+                              category === filters.category && styles['type-button_active'],
+                            )
+                          }
                                   type="button"
                                   onClick={ () => handleCategoryChange(category) }
                           >
