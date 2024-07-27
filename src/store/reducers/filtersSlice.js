@@ -24,12 +24,17 @@ const filtersSlice = createSlice({
         state[key] = '';
       }
     },
+
+    changeCategory: (state, action) => {
+      state.category = action.payload;
+    },
   },
 });
 
 export const {
   setFilters,
   clearFilters,
+  changeCategory,
 } = filtersSlice.actions;
 
 export default filtersSlice.reducer;

@@ -21,6 +21,7 @@ export const fetchGoods = createAsyncThunk(
 
 const initialState = {
   items: [],
+  categories: [],
   status: 'idle',
   error: null,
   title: {
@@ -45,10 +46,20 @@ const GoodsSlice = createSlice({
     builder
       .addCase(fetchGoods.pending, (state) => {
         state.status = 'loading';
+        state.categories = [];
       })
       .addCase(fetchGoods.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.items = action.payload;
+        action.payload.forEach(product => {
+          if (!product.categories) return;
+
+          product.categories.forEach(category => {
+            if (state.categories.includes(category)) return;
+
+            state.categories.push(category)
+          });
+        });
       })
       .addCase(fetchGoods.rejected, (state, action) => {
         state.status = 'failed';

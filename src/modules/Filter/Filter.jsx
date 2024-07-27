@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchGoods, setGoodsTitleValue } from '@store/reducers/goodsSlice';
 import getValidFilters from '@utils/validFilters';
 import debounce from '@utils/debounce';
-import { clearFilters, setFilters } from '@store/reducers/filtersSlice';
+import { changeCategory, clearFilters, setFilters } from '@store/reducers/filtersSlice';
 import isValueString from '@utils/isValueString';
 import { FilterRadio } from '@modules/Filter/FilterRadio';
 import { setSearch } from '@store/reducers/searchSlice';
@@ -22,6 +22,7 @@ export const Filter = ({ titleClass, containerClass }) => {
   const [openChoice, setOpenChoice] = useState(null);
   const filters = useSelector(state => state.filters);
   const search = useSelector(state => state.search.query);
+  const categories = useSelector(state => state.goods.categories);
 
   const prevFilterRef = useRef(filters);
   const debouncedFetchGoods = useRef(
@@ -72,6 +73,11 @@ export const Filter = ({ titleClass, containerClass }) => {
     setOpenChoice(openChoice === index ? null : index);
   };
 
+  const handleCategoryChange = (category) => {
+    dispatch(changeCategory(category));
+    setOpenChoice(null);
+  };
+
   return (
     <section>
       <h2 className={ titleClass }></h2>
@@ -95,7 +101,8 @@ export const Filter = ({ titleClass, containerClass }) => {
             <Choices buttonLabel={ 'Цена' }
                      onToggle={ () => handleChoicesToggle(0) }
                      isOpen={ openChoice === 0 }
-                     position={ 'left' }
+              // FIXME: position
+                     position={ categories.length ? 'left' : 'right' }
             >
               <fieldset className={ styles.price }>
                 <input className={ styles['input-price'] }
@@ -115,30 +122,40 @@ export const Filter = ({ titleClass, containerClass }) => {
               </fieldset>
             </Choices>
 
-
-            <Choices buttonLabel={ 'Тип товара' }
-                     onToggle={ () => handleChoicesToggle(1) }
-                     isOpen={ openChoice === 1 }
-                     position={ 'right' }
-            >
-              <ul>
-                <li className={ styles['type-item'] }>
-                  <button className={ styles['type-button'] } type="button">Монобукеты</button>
-                </li>
-                <li className={ styles['type-item'] }>
-                  <button className={ styles['type-button'] } type="button">Авторские букеты</button>
-                </li>
-                <li className={ styles['type-item'] }>
-                  <button className={ styles['type-button'] } type="button">Цветы в коробке</button>
-                </li>
-                <li className={ styles['type-item'] }>
-                  <button className={ styles['type-button'] } type="button">Цветы в корзине</button>
-                </li>
-                <li className={ styles['type-item'] }>
-                  <button className={ styles['type-button'] } type="button">Букеты из сухоцветов</button>
-                </li>
-              </ul>
-            </Choices>
+            {
+              categories.length
+                ?
+                <Choices buttonLabel={ 'Тип товара' }
+                         onToggle={ () => handleChoicesToggle(1) }
+                         isOpen={ openChoice === 1 }
+                         position={ 'right' }
+                >
+                  <ul>
+                    <li className={ styles['type-item'] }>
+                      <button className={ styles['type-button'] }
+                              type="button"
+                              onClick={ () => handleCategoryChange('') }
+                      >
+                        Все товары
+                      </button>
+                    </li>
+                    {
+                      categories.map(category =>
+                        <li key={ category } className={ styles['type-item'] }>
+                          <button className={ styles['type-button'] }
+                                  type="button"
+                                  onClick={ () => handleCategoryChange(category) }
+                          >
+                            { category }
+                          </button>
+                        </li>
+                      )
+                    }
+                  </ul>
+                </Choices>
+                :
+                null
+            }
           </fieldset>
         </form>
       </div>
