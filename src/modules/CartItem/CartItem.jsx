@@ -26,22 +26,25 @@ export const CartItem = ({ id, name, photoUrl, price, quantity }) => {
   };
 
   const handleDecrement = () => {
-    if (parseInt(inputRef.current.value) < 1) {
-      inputRef.current.value = 0;
-      setInputQuantity(0);
-      debouncedInputChange(0);
+    const decrementedQuantity = inputQuantity - 1;
+    const inputValue = parseInt(inputRef.current.value);
+
+    // * Repeated request at 0 quantity is no longer sent and the ap doesn't crash
+    if (inputValue > 1) {
+      setInputQuantity(decrementedQuantity);
+      dispatch(addItemToCart({ productId: id, quantity: decrementedQuantity }));
       return;
     }
 
-    const newQuantity = inputQuantity - 1;
-    setInputQuantity(newQuantity);
-    dispatch(addItemToCart({ productId: id, quantity: newQuantity }));
+    inputRef.current.value = 0;
+    setInputQuantity(0);
+    debouncedInputChange(0);
   };
 
   const handleIncrement = () => {
-    const newQuantity = inputQuantity + 1;
-    setInputQuantity(newQuantity);
-    dispatch(addItemToCart({ productId: id, quantity: newQuantity }));
+    const incrementedQuantity = inputQuantity + 1;
+    setInputQuantity(incrementedQuantity);
+    dispatch(addItemToCart({ productId: id, quantity: incrementedQuantity }));
   };
 
   return (
