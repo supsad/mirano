@@ -49,7 +49,7 @@ export const addItemToCart = createAsyncThunk(
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ productId, quantity })
+          body: JSON.stringify({ productId, quantity }),
         },
         errMessage,
       );
@@ -111,8 +111,8 @@ const cartSlice = createSlice({
       .addCase(addItemToCart.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-      })
-  }
+      });
+  },
 });
 
 export const { toggleCart} = cartSlice.actions;
