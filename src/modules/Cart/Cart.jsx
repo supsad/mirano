@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleCart } from '@store/reducers/cartSlice.js';
 import { openOrder } from '@store/reducers/orderSlice.js';
 import { useEffect, useRef, useState } from 'react';
-import { API_URL } from '@/constants';
 
 export const Cart = () => {
   const dispatch = useDispatch();
@@ -47,14 +46,9 @@ export const Cart = () => {
 
         <ul className={ styles.list }>
           {
-            items.map(item => (
-              <CartItem key={ item.id }
-                        img={ `${ API_URL }${ item.photoUrl }` }
-                        title={ item.name }
-                        price={ item.price }
-                        count={ item.quantity }
-              />
-            ))
+            items.map(item =>
+              <CartItem key={ item.id } { ...item } />
+            )
           }
         </ul>
 
