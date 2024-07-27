@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import fetchData from '@/fetchData';
-import { API_URL } from '@/constants';
 
 export const registerCart = createAsyncThunk(
   'cart/registerCart',
@@ -42,29 +41,18 @@ export const addItemToCart = createAsyncThunk(
     const errMessage = 'Не удалось отправить товар в корзину';
 
     try {
-      const response = await fetch(`${API_URL}/api/cart/items`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
+      return await fetchData(
+        '/api/cart/items',
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ productId, quantity })
         },
-        body: JSON.stringify({ productId, quantity })
-      });
-
-      return await response.json();
-
-      // return await fetchData(
-      //   '/api/cart/items',
-      //   {
-      //     method: 'POST',
-      //     credentials: 'include',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({ productId, quantity })
-      //   },
-      //   errMessage,
-      // );
+        errMessage,
+      );
     } catch (err) {
       return thunkAPI.rejectWithValue(`${err.response.status} - ${err.response.statusText}`, errMessage);
     }
